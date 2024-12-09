@@ -1,0 +1,30 @@
+name: Generate SQLite DB Artifact
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up SQLite
+      run: sudo apt-get install -y sqlite3
+
+    - name: Generate SQLite DB
+      run: |
+        sqlite3 artifacts/feyod.db < feyod.sql
+
+    - name: Upload SQLite DB Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: sqlite-db-artifact
+        path: artifacts/feyod.db
