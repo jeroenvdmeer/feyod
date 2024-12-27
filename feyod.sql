@@ -33,6 +33,22 @@ CREATE TABLE "goals" (
 		ON UPDATE CASCADE
 		ON DELETE CASCADE
 );
+DROP TABLE IF EXISTS "lineups";
+CREATE TABLE "lineups" (
+	"matchId"	INTEGER NOT NULL,
+	"playerId"	INTEGER NOT NULL,
+	"clubId"	INTEGER NOT NULL,
+	"starting"	INTEGER,
+	PRIMARY KEY("matchId","playerId"),
+	FOREIGN KEY("matchId")
+		REFERENCES "matches"("matchId")
+		ON UPDATE CASCADE
+		ON DELETE CASCADE,
+	FOREIGN KEY("playerId")
+		REFERENCES "players"("playerId")
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
+);
 DROP TABLE IF EXISTS "matches";
 CREATE TABLE "matches" (
 	"matchId"	INTEGER NOT NULL,
@@ -68,6 +84,26 @@ CREATE TABLE "seasons" (
 	PRIMARY KEY("seasonId"),
 	FOREIGN KEY("competitionId")
 		REFERENCES "competitions"("competitionId")
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
+);
+DROP TABLE IF EXISTS "substitutions";
+CREATE TABLE "substitutions" (
+	"matchId"	INTEGER NOT NULL,
+	"playerIdOut"	INTEGER NOT NULL,
+	"playerIdIn"	INTEGER,
+	"minute"	INTEGER,
+	PRIMARY KEY("matchId","playerIdOut"),
+	FOREIGN KEY("matchId")
+		REFERENCES "matches"("matchId")
+		ON UPDATE CASCADE
+		ON DELETE CASCADE,
+	FOREIGN KEY("playerIdOut")
+		REFERENCES "players"("playerId")
+		ON UPDATE CASCADE
+		ON DELETE CASCADE,
+	FOREIGN KEY("playerIdIn")
+		REFERENCES "players"("playerId")
 		ON UPDATE CASCADE
 		ON DELETE CASCADE
 );
