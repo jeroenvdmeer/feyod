@@ -1,6 +1,22 @@
 BEGIN TRANSACTION;
 PRAGMA defer_foreign_keys = 1;
 
+DROP TABLE IF EXISTS "cards";
+CREATE TABLE "cards" (
+	"matchId"	INTEGER NOT NULL,
+	"playerId"	INTEGER NOT NULL,
+	"cardType"	TEXT NOT NULL,
+	"minute"	INTEGER,
+	PRIMARY KEY("matchId","playerId","cardType","minute"),
+	FOREIGN KEY("matchId")
+		REFERENCES "matches"("matchId")
+		ON UPDATE CASCADE
+		ON DELETE CASCADE,
+	FOREIGN KEY("playerId")
+		REFERENCES "players"("playerId")
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
+);
 DROP TABLE IF EXISTS "clubs";
 CREATE TABLE "clubs" (
 	"clubId"	INTEGER NOT NULL,
@@ -11424,7 +11440,7 @@ INSERT INTO "players" ("playerId","playerName","wikiKey","wikiLang") VALUES (1,'
  (1938,'Ibrahim Sadiq','Ibrahim_Sadiq','nl'),
  (1939,'Denso Kasius','Denso_Kasius','nl'),
  (1940,'Alexandre Penetra','Alexandre_Penetra','nl'),
- (1941,'Casper Widell','Casper_Widell','en'),
+ (1941,'Casper Widell','Casper_Widell','nl'),
  (1942,'Cisse Sandra','Cisse_Sandra','nl'),
  (1943,'Troy Parrott','Troy_Parrott','nl'),
  (1944,'Richie Omorowa','Richie_Omorowa','nl'),
