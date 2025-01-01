@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 PRAGMA defer_foreign_keys = 1;
-DROP TABLE IF EXISTS cards;
+DROP TABLE IF EXISTS "cards";
 CREATE TABLE "cards" (
 	"matchId"	INTEGER NOT NULL,
 	"playerId"	INTEGER NOT NULL,
@@ -25,8 +25,14 @@ INSERT INTO cards (matchId, playerId, cardType, minute) VALUES
 (2288, 1460, 'YC', 46),
 (2288, 1262, 'YC', 58),
 (2288, 1457, 'YC', 68),
-(2288, 1459, 'YC', 81);
-DROP TABLE IF EXISTS clubs;
+(2288, 1459, 'YC', 81),
+(2289, 1457, 'YC', 72),
+(2289, 2584, 'YC', 90),
+(2289, 2585, 'YC', 93),
+(2289, 2579, 'YC', 50),
+(2289, 2578, 'YC', 53),
+(2289, 1454, 'YC', 83);
+DROP TABLE IF EXISTS "clubs";
 CREATE TABLE "clubs" (
 	"clubId"	INTEGER NOT NULL,
 	"clubName"	TEXT,
@@ -116,7 +122,7 @@ INSERT INTO clubs (clubId, clubName, wikiKey, wikiLang) VALUES
 (80, 'Osasuna', 'CA_Osasuna', 'nl'),
 (81, 'FC Zürich', 'FC_Zürich', 'nl'),
 (82, 'Monaco', 'AS_Monaco', 'nl');
-DROP TABLE IF EXISTS competitions;
+DROP TABLE IF EXISTS "competitions";
 CREATE TABLE "competitions" (
 	"competitionId"	INTEGER NOT NULL,
 	"competitionName"	TEXT,
@@ -156,7 +162,7 @@ INSERT INTO competitions (competitionId, competitionName) VALUES
 (31, 'Eerste Klasse West I'),
 (32, 'Eerste Klasse West II'),
 (33, 'Club vriendschappelijk');
-DROP TABLE IF EXISTS goals;
+DROP TABLE IF EXISTS "goals";
 CREATE TABLE "goals" (
 	"matchId"	INTEGER NOT NULL,
 	"playerId"	INTEGER NOT NULL,
@@ -7158,8 +7164,10 @@ INSERT INTO goals (matchId, playerId, scoreHomeTeam, scoreAwayTeam, minute, extr
 (2288, 1390, 1, 1, 29, NULL),
 (2288, 1457, 1, 2, 33, NULL),
 (2288, 1390, 2, 3, 54, NULL),
-(2288, 1462, 3, 4, 72, NULL);
-DROP TABLE IF EXISTS lineups;
+(2288, 1462, 3, 4, 72, NULL),
+(2289, 1462, 1, 0, 12, NULL),
+(2289, 2578, 1, 1, 82, NULL);
+DROP TABLE IF EXISTS "lineups";
 CREATE TABLE "lineups" (
 	"matchId"	INTEGER NOT NULL,
 	"playerId"	INTEGER NOT NULL,
@@ -7220,8 +7228,54 @@ INSERT INTO lineups (matchId, playerId, clubId, starting) VALUES
 (2288, 2235, 20, 0),
 (2288, 1174, 34, 0),
 (2288, 1457, 20, 1),
-(2288, 1390, 20, 1);
-DROP TABLE IF EXISTS matches;
+(2288, 1390, 20, 1),
+(2289, 1454, 20, 1),
+(2289, 1258, 20, 1),
+(2289, 1462, 20, 1),
+(2289, 1460, 20, 1),
+(2289, 1457, 20, 1),
+(2289, 1262, 20, 1),
+(2289, 1390, 20, 1),
+(2289, 1478, 20, 1),
+(2289, 1455, 20, 0),
+(2289, 1162, 20, 0),
+(2289, 2169, 20, 0),
+(2289, 2033, 20, 0),
+(2289, 1267, 20, 0),
+(2289, 1456, 20, 0),
+(2289, 2117, 20, 0),
+(2289, 1247, 20, 0),
+(2289, 1251, 20, 0),
+(2289, 1459, 20, 0),
+(2289, 1755, 20, 0),
+(2289, 2235, 20, 0),
+(2289, 1816, 47, 1),
+(2289, 1796, 47, 1),
+(2289, 1508, 47, 1),
+(2289, 1651, 20, 1),
+(2289, 1673, 20, 1),
+(2289, 1210, 20, 1),
+(2289, 1476, 47, 1),
+(2289, 1942, 47, 1),
+(2289, 1720, 47, 0),
+(2289, 1402, 47, 0),
+(2289, 2065, 47, 0),
+(2289, 2574, 47, 1),
+(2289, 2575, 47, 0),
+(2289, 2576, 47, 1),
+(2289, 2577, 47, 1),
+(2289, 2578, 47, 1),
+(2289, 2579, 47, 1),
+(2289, 2580, 47, 1),
+(2289, 2581, 47, 0),
+(2289, 2582, 47, 0),
+(2289, 2583, 47, 0),
+(2289, 2584, 47, 0),
+(2289, 2585, 47, 0),
+(2289, 2586, 47, 0),
+(2289, 2587, 47, 0),
+(2289, 2588, 47, 0);
+DROP TABLE IF EXISTS "matches";
 CREATE TABLE "matches" (
 	"matchId"	INTEGER NOT NULL,
 	"dateAndTime"	TEXT NOT NULL UNIQUE,
@@ -9528,8 +9582,9 @@ INSERT INTO matches (matchId, dateAndTime, seasonId, homeClubId, homeClubName, h
 (2285, '2024-05-05', 292, 20, 'Feyenoord', 5, NULL, 33, 'PEC Zwolle', 0, NULL, NULL),
 (2286, '2024-05-12', 292, 31, 'NEC', 2, NULL, 20, 'Feyenoord', 3, NULL, NULL),
 (2287, '2024-05-19', 292, 20, 'Feyenoord', 4, NULL, 51, 'Excelsior Rotterdam', 0, NULL, NULL),
-(2288, '2024-08-04T16:00:00Z', 293, 34, 'PSV', 4, 2, 20, 'Feyenoord', 4, 4, 0);
-DROP TABLE IF EXISTS players;
+(2288, '2024-08-04T16:00:00Z', 293, 34, 'PSV', 4, 2, 20, 'Feyenoord', 4, 4, 0),
+(2289, '2024-08-10T14:30:00Z', 294, 20, 'Feyenoord', 1, NULL, 47, 'Willem II', 1, NULL, 0);
+DROP TABLE IF EXISTS "players";
 CREATE TABLE "players" (
 	"playerId"	INTEGER NOT NULL,
 	"playerName"	TEXT NOT NULL,
@@ -12110,8 +12165,23 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2570, 'Billy van Duijl', 'Billy_van_Duijl', 'nl'),
 (2571, 'Tristan Gooijer', 'Tristan_Gooijer', 'nl'),
 (2572, 'Jayden Braaf', 'Jayden_Braaf', 'nl'),
-(2573, 'Siem de Moes', 'Siem_de_Moes', 'nl');
-DROP TABLE IF EXISTS seasons;
+(2573, 'Siem de Moes', 'Siem_de_Moes', 'nl'),
+(2574, 'Ringo Meerveld', 'Ringo_Meerveld', 'nl'),
+(2575, 'Rob Nizet', 'Rob_Nizet', 'nl'),
+(2576, 'Raffael Behounek', 'Raffael_Behounek', 'nl'),
+(2577, 'Thomas Didillon-Hödl', NULL, 'nl'),
+(2578, 'Kyan Vaesen', 'Kyan_Vaesen', 'nl'),
+(2579, 'Amine Lachkar', 'Amine_Lachkar', 'nl'),
+(2580, 'Rúnar Þór Sigurgeirsson', 'Rúnar_Þór_Sigurgeirsson', 'nl'),
+(2581, 'Jeremy Bokila', 'Jeremy_Bokila', 'nl'),
+(2582, 'Dani Mathieu', 'Dani_Mathieu', 'nl'),
+(2583, 'Khaled Razak', NULL, 'nl'),
+(2584, 'Jens Mathijsen', 'Jens_Mathijsen', 'nl'),
+(2585, 'Valentino Vermeulen', 'Valentino_Vermeulen', 'nl'),
+(2586, 'Joshua Smits', 'Joshua_Smits', 'nl'),
+(2587, 'Emilio Kehrer', 'Emilio_Kehrer', 'nl'),
+(2588, 'Per van Loon', NULL, 'nl');
+DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" (
 	"seasonId"	INTEGER NOT NULL,
 	"seasonStartYear"	INTEGER NOT NULL,
@@ -12415,8 +12485,9 @@ INSERT INTO seasons (seasonId, seasonStartYear, competitionId) VALUES
 (290, 1948, 7),
 (291, 1949, 7),
 (292, 2023, 6),
-(293, 2024, 15);
-DROP TABLE IF EXISTS substitutions;
+(293, 2024, 15),
+(294, 2024, 6);
+DROP TABLE IF EXISTS "substitutions";
 CREATE TABLE "substitutions" (
 	"matchId"	INTEGER NOT NULL,
 	"playerIdOut"	INTEGER NOT NULL,
@@ -12436,5 +12507,6 @@ CREATE TABLE "substitutions" (
 		ON UPDATE CASCADE
 		ON DELETE CASCADE
 );
+
 
 COMMIT;
