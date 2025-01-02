@@ -13299,7 +13299,7 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2705, 'Josip Mitrović', NULL, NULL),
 (2706, 'Luka Tunjić', NULL, NULL),
 (2707, 'Tim van de Loo', 'Tim_van_de_Loo', 'nl'),
-(2708, 'Roshon Felix Romar Jordan van Eijma', NULL, NULL),
+(2708, 'Roshon van Eijma', 'Roshon_van_Eijma', 'nl'),
 (2709, 'Luuk Vogels', NULL, NULL),
 (2710, 'Mohamed Ihattaren', 'Mohamed_Ihattaren', 'nl'),
 (2711, 'Oskar Zawada', 'Oskar_Zawada', 'nl'),
