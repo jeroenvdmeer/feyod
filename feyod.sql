@@ -7301,7 +7301,12 @@ INSERT INTO goals (matchId, playerId, scoreHomeTeam, scoreAwayTeam, minute, extr
 (2306, 1390, 3, 2, 82, NULL),
 (2306, 1258, 3, 3, 89, NULL),
 (2307, 1390, 1, 1, 81, NULL),
-(2307, 1516, 0, 1, 33, NULL);
+(2307, 1516, 0, 1, 33, NULL),
+(2308, 2711, 1, 0, 12, NULL),
+(2308, 1274, 2, 2, 72, NULL),
+(2308, 1274, 1, 1, 24, NULL),
+(2308, 2033, 1, 2, 49, NULL),
+(2308, 1262, 2, 3, 74, NULL);
 DROP TABLE IF EXISTS "lineups";
 CREATE TABLE "lineups" (
 	"matchId"	INTEGER NOT NULL,
@@ -8205,7 +8210,51 @@ INSERT INTO lineups (matchId, playerId, clubId, starting) VALUES
 (2307, 2701, 22, 0),
 (2307, 2706, 22, 0),
 (2307, 2698, 22, 1),
-(2307, 2704, 22, 1);
+(2307, 2704, 22, 1),
+(2308, 1404, 37, 1),
+(2308, 1517, 37, 1),
+(2308, 1523, 37, 1),
+(2308, 1567, 37, 1),
+(2308, 1274, 37, 1),
+(2308, 1811, 37, 1),
+(2308, 1966, 37, 1),
+(2308, 1853, 37, 1),
+(2308, 1659, 37, 0),
+(2308, 1074, 37, 0),
+(2308, 1575, 37, 0),
+(2308, 1128, 37, 0),
+(2308, 1885, 37, 0),
+(2308, 2517, 37, 0),
+(2308, 2000, 37, 0),
+(2308, 1412, 37, 0),
+(2308, 1454, 20, 1),
+(2308, 1455, 20, 1),
+(2308, 2117, 20, 1),
+(2308, 2135, 20, 1),
+(2308, 1262, 20, 1),
+(2308, 1251, 20, 1),
+(2308, 1390, 20, 1),
+(2308, 2033, 20, 1),
+(2308, 1162, 20, 0),
+(2308, 2104, 20, 0),
+(2308, 1462, 20, 1),
+(2308, 2061, 20, 0),
+(2308, 1457, 20, 0),
+(2308, 2129, 20, 0),
+(2308, 2283, 20, 0),
+(2308, 2347, 20, 0),
+(2308, 1191, 20, 0),
+(2308, 1755, 20, 0),
+(2308, 1258, 20, 1),
+(2308, 1478, 20, 0),
+(2308, 1247, 20, 1),
+(2308, 1460, 20, 0),
+(2308, 2707, 37, 1),
+(2308, 2708, 37, 1),
+(2308, 2709, 37, 0),
+(2308, 2710, 37, 0),
+(2308, 2711, 37, 1),
+(2308, 2712, 37, 0);
 DROP TABLE IF EXISTS "matches";
 CREATE TABLE "matches" (
 	"matchId"	INTEGER NOT NULL,
@@ -10532,7 +10581,8 @@ INSERT INTO matches (matchId, dateAndTime, seasonId, homeClubId, homeClubName, h
 (2304, '2024-11-10T11:15:00Z', 294, 55, 'Almere City FC', 1, NULL, 20, 'Feyenoord', 4, NULL, 0),
 (2305, '2024-11-23T17:45:00Z', 294, 20, 'Feyenoord', 3, NULL, 52, 'sc Heerenveen', 0, NULL, 0),
 (2306, '2024-11-26T20:00:00Z', 295, 83, 'Manchester City', 3, NULL, 20, 'Feyenoord', 3, NULL, 0),
-(2307, '2024-11-30T19:00:00Z', 294, 20, 'Feyenoord', 1, NULL, 22, 'Fortuna Sittard', 1, NULL, 0);
+(2307, '2024-11-30T19:00:00Z', 294, 20, 'Feyenoord', 1, NULL, 22, 'Fortuna Sittard', 1, NULL, 0),
+(2308, '2024-12-07T19:00:00Z', 294, 37, 'RKC Waalwijk', 2, NULL, 20, 'Feyenoord', 3, NULL, 0);
 DROP TABLE IF EXISTS "players";
 CREATE TABLE "players" (
 	"playerId"	INTEGER NOT NULL,
@@ -13247,7 +13297,13 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2703, 'Darijo Grujčić', NULL, NULL),
 (2704, 'Samuel Bastien', 'Samuel_Bastien', 'nl'),
 (2705, 'Josip Mitrović', NULL, NULL),
-(2706, 'Luka Tunjić', NULL, NULL);
+(2706, 'Luka Tunjić', NULL, NULL),
+(2707, 'Tim van de Loo', 'Tim_van_de_Loo', 'nl'),
+(2708, 'Roshon Felix Romar Jordan van Eijma', NULL, NULL),
+(2709, 'Luuk Vogels', NULL, NULL),
+(2710, 'Mohamed Ihattaren', 'Mohamed_Ihattaren', 'nl'),
+(2711, 'Oskar Zawada', 'Oskar_Zawada', 'nl'),
+(2712, 'Faissal Al Mazyani', 'Faissal_Al_Mazyani', 'nl');
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" (
 	"seasonId"	INTEGER NOT NULL,
