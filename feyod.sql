@@ -13163,7 +13163,7 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2673, 'Amara Condé', NULL, NULL),
 (2674, 'Levi Smans', 'Levi_Smans', 'nl'),
 (2675, 'Danilo Al-Saed', 'Danilo_Al-Saed', 'nl'),
-(2676, 'Ederson Santana de Moraes', NULL, NULL),
+(2676, 'Ederson', 'Ederson_(footballer,_born_1993)', 'en'),
 (2677, 'Jack Grealish', 'Jack_Grealish', 'en'),
 (2678, 'Josh Wilson-Esbrand', 'Josh_Wilson-Esbrand', 'en'),
 (2679, 'Joško Gvardiol', 'Joško_Gvardiol', 'en'),
@@ -13180,8 +13180,8 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2690, 'Kyle Walker', 'Kyle_Walker', 'en'),
 (2691, 'Jacob Wright', 'Jacob_Wright', 'en'),
 (2692, 'Scott Carson', 'Scott_Carson', 'en'),
-(2693, 'Philip Walter Foden', NULL, NULL),
-(2694, 'Rico Henry Mark Lewis', NULL, NULL),
+(2693, 'Phil Foden', 'Phil_Foden', 'en'),
+(2694, 'Rico Henry Mark Lewis', 'Rico_Lewis', 'en'),
 (2695, 'Stefan Ortega', 'Stefan_Ortega', 'en'),
 (2696, 'Rúben Dias', 'Rúben_Dias', 'en');
 DROP TABLE IF EXISTS "seasons";
