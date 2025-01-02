@@ -13052,7 +13052,7 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2665, 'Vasilios Zagaritis', 'Vasilios_Zagaritis', 'nl'),
 (2666, 'Jonas Wendlinger', 'Jonas_Wendlinger', 'nl'),
 (2667, 'Tim Receveur', 'Tim_Receveur', 'nl'),
-(2668, 'James Alexander Lawrence', NULL, NULL);
+(2668, 'James Alexander Lawrence', 'James_Lawrence_(voetballer)', 'nl');
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" (
 	"seasonId"	INTEGER NOT NULL,
