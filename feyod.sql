@@ -83,7 +83,11 @@ INSERT INTO cards (matchId, playerId, cardType, minute) VALUES
 (2301, 2128, 'YC', 42),
 (2301, 1251, 'YC', 83),
 (2301, 2129, 'YC', 96),
-(2301, 1916, 'YC', 46);
+(2301, 1916, 'YC', 46),
+(2303, 1163, 'YC', 66),
+(2303, 2646, 'YC', 72),
+(2303, 2061, 'RC', 80),
+(2303, 2129, 'YC', 21);
 DROP TABLE IF EXISTS "clubs";
 CREATE TABLE "clubs" (
 	"clubId"	INTEGER NOT NULL,
@@ -7265,7 +7269,11 @@ INSERT INTO goals (matchId, playerId, scoreHomeTeam, scoreAwayTeam, minute, extr
 (2302, 1478, 2, 1, 63, NULL),
 (2302, 2129, 3, 1, 82, NULL),
 (2302, 1943, 0, 1, 43, NULL),
-(2302, 2520, 3, 2, 89, NULL);
+(2302, 2520, 3, 2, 89, NULL),
+(2303, 2033, 1, 2, 81, NULL),
+(2303, 2653, 0, 1, 47, NULL),
+(2303, 2653, 0, 2, 58, NULL),
+(2303, 2650, 1, 3, 86, NULL);
 DROP TABLE IF EXISTS "lineups";
 CREATE TABLE "lineups" (
 	"matchId"	INTEGER NOT NULL,
@@ -7949,7 +7957,50 @@ INSERT INTO lineups (matchId, playerId, clubId, starting) VALUES
 (2302, 2638, 3, 0),
 (2302, 2637, 3, 0),
 (2302, 2636, 3, 0),
-(2302, 2639, 3, 0);
+(2302, 2639, 3, 0),
+(2303, 1454, 20, 1),
+(2303, 1258, 20, 1),
+(2303, 2164, 20, 1),
+(2303, 1478, 20, 1),
+(2303, 1391, 20, 1),
+(2303, 1457, 20, 1),
+(2303, 2129, 20, 1),
+(2303, 1262, 20, 1),
+(2303, 1455, 20, 0),
+(2303, 2201, 20, 0),
+(2303, 2104, 20, 0),
+(2303, 2033, 20, 0),
+(2303, 2137, 20, 0),
+(2303, 2155, 20, 0),
+(2303, 2061, 20, 0),
+(2303, 1247, 20, 0),
+(2303, 1460, 20, 0),
+(2303, 1163, 67, 1),
+(2303, 1755, 20, 0),
+(2303, 2347, 20, 0),
+(2303, 2135, 20, 1),
+(2303, 2128, 20, 1),
+(2303, 1251, 20, 1),
+(2303, 2200, 67, 1),
+(2303, 2640, 67, 0),
+(2303, 2641, 67, 1),
+(2303, 2642, 67, 1),
+(2303, 2643, 67, 1),
+(2303, 2644, 67, 1),
+(2303, 2645, 67, 1),
+(2303, 2646, 67, 1),
+(2303, 2647, 67, 1),
+(2303, 2648, 67, 0),
+(2303, 2649, 67, 1),
+(2303, 2650, 67, 0),
+(2303, 2651, 67, 0),
+(2303, 2652, 67, 0),
+(2303, 2653, 67, 1),
+(2303, 2654, 67, 0),
+(2303, 2655, 67, 0),
+(2303, 2656, 67, 0),
+(2303, 2657, 67, 0),
+(2303, 2658, 67, 0);
 DROP TABLE IF EXISTS "matches";
 CREATE TABLE "matches" (
 	"matchId"	INTEGER NOT NULL,
@@ -10271,7 +10322,8 @@ INSERT INTO matches (matchId, dateAndTime, seasonId, homeClubId, homeClubName, h
 (2299, '2024-10-23T19:00:00Z', 295, 59, 'Benfica', 1, NULL, 20, 'Feyenoord', 3, NULL, 0),
 (2300, '2024-10-27T11:15:00Z', 294, 17, 'FC Utrecht', 0, NULL, 20, 'Feyenoord', 2, NULL, 0),
 (2301, '2024-10-30T17:00:00Z', 294, 20, 'Feyenoord', 0, NULL, 2, 'Ajax', 2, NULL, 0),
-(2302, '2024-11-02T20:00:00Z', 294, 20, 'Feyenoord', 3, NULL, 3, 'AZ', 2, NULL, 0);
+(2302, '2024-11-02T20:00:00Z', 294, 20, 'Feyenoord', 3, NULL, 3, 'AZ', 2, NULL, 0),
+(2303, '2024-11-06T20:00:00Z', 295, 20, 'Feyenoord', 1, NULL, 67, 'Red Bull Salzburg', 3, NULL, 0);
 DROP TABLE IF EXISTS "players";
 CREATE TABLE "players" (
 	"playerId"	INTEGER NOT NULL,
@@ -12919,7 +12971,26 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2636, 'Kees Smit', 'Kees_Smit', 'nl'),
 (2637, 'Seiya Maikuma', 'Seiya_Maikuma', 'nl'),
 (2638, 'Dave Kwakman', 'Dave_Kwakman', 'nl'),
-(2639, 'Ro-Zangelo Daal', 'Ro-Zangelo_Daal', 'nl');
+(2639, 'Ro-Zangelo Daal', 'Ro-Zangelo_Daal', 'nl'),
+(2640, 'Adam Daghim', 'Adam_Daghim', 'en'),
+(2641, 'Samson Baidoo', 'Samson_Baidoo', 'en'),
+(2642, 'Aleksa Terzić', 'Aleksa_Terzić', 'en'),
+(2643, 'Kamil Dawid Piątkowski', NULL, NULL),
+(2644, 'Lucas Gourna-Douath', 'Lucas_Gourna-Douath', 'en'),
+(2645, 'Bobby Lamont Clark', NULL, NULL),
+(2646, 'Nicolás Capaldo', 'Nicolás_Capaldo', 'en'),
+(2647, 'Oscar Gloukh', 'Oscar_Gloukh', 'en'),
+(2648, 'Leandro-Noel Morgalla', NULL, NULL),
+(2649, 'Dorgeles Nene', 'Dorgeles_Nene', 'en'),
+(2650, 'Daouda Guindo', 'Daouda_Guindo', 'en'),
+(2651, 'Salko Hamzić', 'Salko_Hamzić', 'en'),
+(2652, 'Valentin Oelz', NULL, NULL),
+(2653, 'Karim Konaté', 'Karim_Konaté', 'en'),
+(2654, 'Petar Ratkov', 'Petar_Ratkov', 'en'),
+(2655, 'John Mellberg', 'John_Mellberg', 'en'),
+(2656, 'Hendry Blank', 'Hendry_Blank', 'en'),
+(2657, 'Oliver Lukić', 'Oliver_Lukić', 'en'),
+(2658, 'Moussa Yeo', 'Moussa_Yeo', 'en');
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" (
 	"seasonId"	INTEGER NOT NULL,
