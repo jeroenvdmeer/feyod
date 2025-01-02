@@ -72,7 +72,12 @@ INSERT INTO cards (matchId, playerId, cardType, minute) VALUES
 (2298, 2135, 'YC', 42),
 (2299, 2242, 'YC', 91),
 (2299, 2285, 'YC', 92),
-(2299, 1251, 'YC', 39);
+(2299, 1251, 'YC', 39),
+(2300, 1695, 'YC', 37),
+(2300, 1547, 'YC', 75),
+(2300, 2278, 'YC', 96),
+(2300, 2033, 'YC', 88),
+(2300, 1251, 'YC', 90);
 DROP TABLE IF EXISTS "clubs";
 CREATE TABLE "clubs" (
 	"clubId"	INTEGER NOT NULL,
@@ -7245,7 +7250,9 @@ INSERT INTO goals (matchId, playerId, scoreHomeTeam, scoreAwayTeam, minute, extr
 (2299, 2248, 1, 2, 66, NULL),
 (2299, 1459, 0, 1, 12, NULL),
 (2299, 1462, 0, 2, 33, NULL),
-(2299, 1462, 1, 3, 92, NULL);
+(2299, 1462, 1, 3, 92, NULL),
+(2300, 2169, 0, 1, 12, NULL),
+(2300, 1251, 0, 2, 54, NULL);
 DROP TABLE IF EXISTS "lineups";
 CREATE TABLE "lineups" (
 	"matchId"	INTEGER NOT NULL,
@@ -7795,7 +7802,52 @@ INSERT INTO lineups (matchId, playerId, clubId, starting) VALUES
 (2299, 1478, 20, 0),
 (2299, 2155, 20, 0),
 (2299, 1247, 20, 0),
-(2299, 1460, 20, 0);
+(2299, 1460, 20, 0),
+(2300, 1745, 17, 1),
+(2300, 1245, 17, 1),
+(2300, 1543, 17, 1),
+(2300, 2278, 17, 1),
+(2300, 1694, 17, 1),
+(2300, 1544, 17, 1),
+(2300, 1695, 17, 1),
+(2300, 1746, 17, 1),
+(2300, 2262, 17, 0),
+(2300, 1545, 17, 1),
+(2300, 1546, 17, 0),
+(2300, 1547, 17, 0),
+(2300, 1542, 17, 1),
+(2300, 2035, 17, 0),
+(2300, 1696, 17, 0),
+(2300, 2179, 17, 0),
+(2300, 2217, 17, 0),
+(2300, 2233, 17, 0),
+(2300, 1037, 17, 0),
+(2300, 1548, 17, 0),
+(2300, 1697, 17, 0),
+(2300, 2128, 20, 1),
+(2300, 1258, 20, 1),
+(2300, 1455, 20, 1),
+(2300, 2135, 20, 1),
+(2300, 1262, 20, 1),
+(2300, 1488, 17, 1),
+(2300, 1251, 20, 1),
+(2300, 2169, 20, 1),
+(2300, 1162, 20, 0),
+(2300, 2104, 20, 0),
+(2300, 1462, 20, 1),
+(2300, 2033, 20, 0),
+(2300, 1478, 20, 0),
+(2300, 2117, 20, 1),
+(2300, 2155, 20, 0),
+(2300, 2061, 20, 0),
+(2300, 2283, 20, 0),
+(2300, 1247, 20, 0),
+(2300, 1391, 20, 0),
+(2300, 1460, 20, 0),
+(2300, 2129, 20, 1),
+(2300, 1454, 20, 1),
+(2300, 2325, 17, 0),
+(2300, 2632, 20, 0);
 DROP TABLE IF EXISTS "matches";
 CREATE TABLE "matches" (
 	"matchId"	INTEGER NOT NULL,
@@ -10114,7 +10166,8 @@ INSERT INTO matches (matchId, dateAndTime, seasonId, homeClubId, homeClubName, h
 (2296, '2024-10-02T16:45:00Z', 295, 60, 'Girona', 2, NULL, 20, 'Feyenoord', 3, NULL, 0),
 (2297, '2024-10-06T12:30:00Z', 294, 20, 'Feyenoord', 2, NULL, 16, 'FC Twente', 1, NULL, 0),
 (2298, '2024-10-19T19:00:00Z', 294, 23, 'Go Ahead Eagles', 1, NULL, 20, 'Feyenoord', 5, NULL, 0),
-(2299, '2024-10-23T19:00:00Z', 295, 59, 'Benfica', 1, NULL, 20, 'Feyenoord', 3, NULL, 0);
+(2299, '2024-10-23T19:00:00Z', 295, 59, 'Benfica', 1, NULL, 20, 'Feyenoord', 3, NULL, 0),
+(2300, '2024-10-27T11:15:00Z', 294, 17, 'FC Utrecht', 0, NULL, 20, 'Feyenoord', 2, NULL, 0);
 DROP TABLE IF EXISTS "players";
 CREATE TABLE "players" (
 	"playerId"	INTEGER NOT NULL,
@@ -12754,7 +12807,8 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2628, 'Lars Mol', NULL, NULL),
 (2629, 'Kacper Kostorz', 'Kacper_Kostorz', 'nl'),
 (2630, 'Matthew Jimmy David Garbett', NULL, NULL),
-(2631, 'Sayfallah Ltaief', 'Sayfallah_Ltaief', 'nl');
+(2631, 'Sayfallah Ltaief', 'Sayfallah_Ltaief', 'nl'),
+(2632, 'Aymen Sliti', NULL, NULL);
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" (
 	"seasonId"	INTEGER NOT NULL,
