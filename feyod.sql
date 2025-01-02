@@ -91,7 +91,9 @@ INSERT INTO cards (matchId, playerId, cardType, minute) VALUES
 (2304, 2660, 'YC', 20),
 (2304, 1970, 'YC', 88),
 (2305, 1913, 'YC', 47),
-(2305, 1785, 'YC', 57);
+(2305, 1785, 'YC', 57),
+(2306, 2169, 'YC', 57),
+(2306, 2689, 'YC', 88);
 DROP TABLE IF EXISTS "clubs";
 CREATE TABLE "clubs" (
 	"clubId"	INTEGER NOT NULL,
@@ -181,7 +183,8 @@ INSERT INTO clubs (clubId, clubName, wikiKey, wikiLang) VALUES
 (79, 'Genk', 'KRC_Genk', 'nl'),
 (80, 'Osasuna', 'CA_Osasuna', 'nl'),
 (81, 'FC Zürich', 'FC_Zürich', 'nl'),
-(82, 'Monaco', 'AS_Monaco', 'nl');
+(82, 'Monaco', 'AS_Monaco', 'nl'),
+(83, 'Manchester City FC', 'Manchester_City_FC', 'nl');
 DROP TABLE IF EXISTS "competitions";
 CREATE TABLE "competitions" (
 	"competitionId"	INTEGER NOT NULL,
@@ -7285,7 +7288,13 @@ INSERT INTO goals (matchId, playerId, scoreHomeTeam, scoreAwayTeam, minute, extr
 (2304, 2033, 1, 4, 78, NULL),
 (2305, 2169, 1, 0, 24, NULL),
 (2305, 2033, 2, 0, 34, NULL),
-(2305, 1262, 3, 0, 78, NULL);
+(2305, 1262, 3, 0, 78, NULL),
+(2306, 2688, 1, 0, 44, NULL),
+(2306, 2683, 2, 0, 50, NULL),
+(2306, 2688, 3, 0, 53, NULL),
+(2306, 2033, 3, 1, 75, NULL),
+(2306, 1390, 3, 2, 82, NULL),
+(2306, 1258, 3, 3, 89, NULL);
 DROP TABLE IF EXISTS "lineups";
 CREATE TABLE "lineups" (
 	"matchId"	INTEGER NOT NULL,
@@ -8099,7 +8108,51 @@ INSERT INTO lineups (matchId, playerId, clubId, starting) VALUES
 (2305, 2672, 52, 0),
 (2305, 2673, 52, 1),
 (2305, 2674, 52, 1),
-(2305, 2675, 52, 0);
+(2305, 2675, 52, 0),
+(2306, 2398, 83, 0),
+(2306, 1454, 20, 1),
+(2306, 1391, 20, 1),
+(2306, 1247, 20, 1),
+(2306, 1457, 20, 1),
+(2306, 1462, 20, 1),
+(2306, 1262, 20, 1),
+(2306, 2169, 20, 1),
+(2306, 2033, 20, 1),
+(2306, 1455, 20, 0),
+(2306, 1162, 20, 0),
+(2306, 1390, 20, 0),
+(2306, 2104, 20, 0),
+(2306, 1478, 20, 0),
+(2306, 2137, 20, 0),
+(2306, 2155, 20, 0),
+(2306, 2347, 20, 0),
+(2306, 1755, 20, 0),
+(2306, 2164, 20, 0),
+(2306, 1251, 20, 1),
+(2306, 1258, 20, 1),
+(2306, 2135, 20, 1),
+(2306, 1460, 20, 0),
+(2306, 2676, 83, 1),
+(2306, 2677, 83, 1),
+(2306, 2678, 83, 0),
+(2306, 2679, 83, 1),
+(2306, 2680, 83, 1),
+(2306, 2681, 83, 1),
+(2306, 2682, 83, 0),
+(2306, 2683, 83, 1),
+(2306, 2684, 83, 0),
+(2306, 2685, 83, 1),
+(2306, 2686, 83, 0),
+(2306, 2687, 83, 1),
+(2306, 2688, 83, 1),
+(2306, 2689, 83, 0),
+(2306, 2690, 83, 0),
+(2306, 2691, 83, 0),
+(2306, 2692, 83, 0),
+(2306, 2693, 83, 1),
+(2306, 2694, 83, 1),
+(2306, 2695, 83, 0),
+(2306, 2696, 83, 0);
 DROP TABLE IF EXISTS "matches";
 CREATE TABLE "matches" (
 	"matchId"	INTEGER NOT NULL,
@@ -10424,7 +10477,8 @@ INSERT INTO matches (matchId, dateAndTime, seasonId, homeClubId, homeClubName, h
 (2302, '2024-11-02T20:00:00Z', 294, 20, 'Feyenoord', 3, NULL, 3, 'AZ', 2, NULL, 0),
 (2303, '2024-11-06T20:00:00Z', 295, 20, 'Feyenoord', 1, NULL, 67, 'Red Bull Salzburg', 3, NULL, 0),
 (2304, '2024-11-10T11:15:00Z', 294, 55, 'Almere City FC', 1, NULL, 20, 'Feyenoord', 4, NULL, 0),
-(2305, '2024-11-23T17:45:00Z', 294, 20, 'Feyenoord', 3, NULL, 52, 'sc Heerenveen', 0, NULL, 0);
+(2305, '2024-11-23T17:45:00Z', 294, 20, 'Feyenoord', 3, NULL, 52, 'sc Heerenveen', 0, NULL, 0),
+(2306, '2024-11-26T20:00:00Z', 295, 83, 'Manchester City', 3, NULL, 20, 'Feyenoord', 3, NULL, 0);
 DROP TABLE IF EXISTS "players";
 CREATE TABLE "players" (
 	"playerId"	INTEGER NOT NULL,
@@ -13108,7 +13162,28 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2672, 'Mateja Milovanović', 'Mateja_Milovanović', 'nl'),
 (2673, 'Amara Condé', NULL, NULL),
 (2674, 'Levi Smans', 'Levi_Smans', 'nl'),
-(2675, 'Danilo Al-Saed', 'Danilo_Al-Saed', 'nl');
+(2675, 'Danilo Al-Saed', 'Danilo_Al-Saed', 'nl'),
+(2676, 'Ederson Santana de Moraes', NULL, NULL),
+(2677, 'Jack Grealish', 'Jack_Grealish', 'en'),
+(2678, 'Josh Wilson-Esbrand', 'Josh_Wilson-Esbrand', 'en'),
+(2679, 'Joško Gvardiol', 'Joško_Gvardiol', 'en'),
+(2680, 'Bernardo Silva', 'Bernardo_Silva', 'en'),
+(2681, 'Nathan Aké', 'Nathan_Aké', 'en'),
+(2682, 'Jahmai Simpson-Pusey', 'Jahmai_Simpson-Pusey', 'en'),
+(2683, 'İlkay Gündoğan', 'İlkay_Gündoğan', 'en'),
+(2684, 'Kevin De Bruyne', 'Kevin_De_Bruyne', 'en'),
+(2685, 'Manuel Akanji', 'Manuel_Akanji', 'en'),
+(2686, 'Nico O''Reilly', 'Nico_O''Reilly', 'en'),
+(2687, 'Matheus Nunes', 'Matheus_Nunes', 'en'),
+(2688, 'Erling Haaland', 'Erling_Haaland', 'en'),
+(2689, 'James McAtee', 'James_McAtee', 'en'),
+(2690, 'Kyle Walker', 'Kyle_Walker', 'en'),
+(2691, 'Jacob Wright', 'Jacob_Wright', 'en'),
+(2692, 'Scott Carson', 'Scott_Carson', 'en'),
+(2693, 'Philip Walter Foden', NULL, NULL),
+(2694, 'Rico Henry Mark Lewis', NULL, NULL),
+(2695, 'Stefan Ortega', 'Stefan_Ortega', 'en'),
+(2696, 'Rúben Dias', 'Rúben_Dias', 'en');
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" (
 	"seasonId"	INTEGER NOT NULL,
