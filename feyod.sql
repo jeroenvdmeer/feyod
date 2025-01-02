@@ -12977,7 +12977,7 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2642, 'Aleksa Terzić', 'Aleksa_Terzić', 'en'),
 (2643, 'Kamil Dawid Piątkowski', NULL, NULL),
 (2644, 'Lucas Gourna-Douath', 'Lucas_Gourna-Douath', 'en'),
-(2645, 'Bobby Lamont Clark', NULL, NULL),
+(2645, 'Bobby Lamont Clark', 'Bobby_Clark_(footballer,_born_2005)', 'en'),
 (2646, 'Nicolás Capaldo', 'Nicolás_Capaldo', 'en'),
 (2647, 'Oscar Gloukh', 'Oscar_Gloukh', 'en'),
 (2648, 'Leandro-Noel Morgalla', NULL, NULL),
