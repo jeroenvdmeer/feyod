@@ -13181,7 +13181,7 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2691, 'Jacob Wright', 'Jacob_Wright', 'en'),
 (2692, 'Scott Carson', 'Scott_Carson', 'en'),
 (2693, 'Phil Foden', 'Phil_Foden', 'en'),
-(2694, 'Rico Henry Mark Lewis', 'Rico_Lewis', 'en'),
+(2694, 'Rico Lewis', 'Rico_Lewis', 'en'),
 (2695, 'Stefan Ortega', 'Stefan_Ortega', 'en'),
 (2696, 'Rúben Dias', 'Rúben_Dias', 'en');
 DROP TABLE IF EXISTS "seasons";
