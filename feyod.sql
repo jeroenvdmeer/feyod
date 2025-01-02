@@ -93,7 +93,12 @@ INSERT INTO cards (matchId, playerId, cardType, minute) VALUES
 (2305, 1913, 'YC', 47),
 (2305, 1785, 'YC', 57),
 (2306, 2169, 'YC', 57),
-(2306, 2689, 'YC', 88);
+(2306, 2689, 'YC', 88),
+(2307, 1391, 'YC', 16),
+(2307, 1390, 'YC', 89),
+(2307, 1516, 'YC', 65),
+(2307, 2698, 'YC', 67),
+(2307, 2033, 'YC', 82);
 DROP TABLE IF EXISTS "clubs";
 CREATE TABLE "clubs" (
 	"clubId"	INTEGER NOT NULL,
@@ -7294,7 +7299,9 @@ INSERT INTO goals (matchId, playerId, scoreHomeTeam, scoreAwayTeam, minute, extr
 (2306, 2688, 3, 0, 53, NULL),
 (2306, 2033, 3, 1, 75, NULL),
 (2306, 1390, 3, 2, 82, NULL),
-(2306, 1258, 3, 3, 89, NULL);
+(2306, 1258, 3, 3, 89, NULL),
+(2307, 1390, 1, 1, 81, NULL),
+(2307, 1516, 0, 1, 33, NULL);
 DROP TABLE IF EXISTS "lineups";
 CREATE TABLE "lineups" (
 	"matchId"	INTEGER NOT NULL,
@@ -8152,7 +8159,53 @@ INSERT INTO lineups (matchId, playerId, clubId, starting) VALUES
 (2306, 2693, 83, 1),
 (2306, 2694, 83, 1),
 (2306, 2695, 83, 0),
-(2306, 2696, 83, 0);
+(2306, 2696, 83, 0),
+(2307, 1454, 20, 1),
+(2307, 1247, 20, 1),
+(2307, 1258, 20, 1),
+(2307, 1391, 20, 1),
+(2307, 2164, 20, 1),
+(2307, 1251, 20, 1),
+(2307, 1460, 20, 1),
+(2307, 2135, 20, 1),
+(2307, 1262, 20, 1),
+(2307, 2347, 20, 1),
+(2307, 2033, 20, 1),
+(2307, 1455, 20, 0),
+(2307, 1162, 20, 0),
+(2307, 1390, 20, 0),
+(2307, 2104, 20, 0),
+(2307, 1478, 20, 0),
+(2307, 2137, 20, 0),
+(2307, 1462, 20, 0),
+(2307, 2061, 20, 0),
+(2307, 1457, 20, 0),
+(2307, 1191, 20, 0),
+(2307, 1755, 20, 0),
+(2307, 1493, 22, 1),
+(2307, 1516, 22, 1),
+(2307, 1897, 22, 1),
+(2307, 2117, 20, 0),
+(2307, 1781, 22, 1),
+(2307, 1662, 22, 1),
+(2307, 1997, 22, 1),
+(2307, 1991, 22, 0),
+(2307, 1900, 22, 0),
+(2307, 1985, 22, 0),
+(2307, 1898, 22, 0),
+(2307, 1986, 22, 0),
+(2307, 1266, 22, 0),
+(2307, 1228, 22, 0),
+(2307, 2697, 22, 1),
+(2307, 2699, 22, 1),
+(2307, 2700, 22, 0),
+(2307, 2702, 22, 0),
+(2307, 2703, 22, 0),
+(2307, 2705, 22, 1),
+(2307, 2701, 22, 0),
+(2307, 2706, 22, 0),
+(2307, 2698, 22, 1),
+(2307, 2704, 22, 1);
 DROP TABLE IF EXISTS "matches";
 CREATE TABLE "matches" (
 	"matchId"	INTEGER NOT NULL,
@@ -10478,7 +10531,8 @@ INSERT INTO matches (matchId, dateAndTime, seasonId, homeClubId, homeClubName, h
 (2303, '2024-11-06T20:00:00Z', 295, 20, 'Feyenoord', 1, NULL, 67, 'Red Bull Salzburg', 3, NULL, 0),
 (2304, '2024-11-10T11:15:00Z', 294, 55, 'Almere City FC', 1, NULL, 20, 'Feyenoord', 4, NULL, 0),
 (2305, '2024-11-23T17:45:00Z', 294, 20, 'Feyenoord', 3, NULL, 52, 'sc Heerenveen', 0, NULL, 0),
-(2306, '2024-11-26T20:00:00Z', 295, 83, 'Manchester City', 3, NULL, 20, 'Feyenoord', 3, NULL, 0);
+(2306, '2024-11-26T20:00:00Z', 295, 83, 'Manchester City', 3, NULL, 20, 'Feyenoord', 3, NULL, 0),
+(2307, '2024-11-30T19:00:00Z', 294, 20, 'Feyenoord', 1, NULL, 22, 'Fortuna Sittard', 1, NULL, 0);
 DROP TABLE IF EXISTS "players";
 CREATE TABLE "players" (
 	"playerId"	INTEGER NOT NULL,
@@ -13183,7 +13237,17 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2693, 'Phil Foden', 'Phil_Foden', 'en'),
 (2694, 'Rico Lewis', 'Rico_Lewis', 'en'),
 (2695, 'Stefan Ortega', 'Stefan_Ortega', 'en'),
-(2696, 'Rúben Dias', 'Rúben_Dias', 'en');
+(2696, 'Rúben Dias', 'Rúben_Dias', 'en'),
+(2697, 'Makan Aïko', 'Makan_Aïko', 'nl'),
+(2698, 'Donfack Ryan Gloire Fosso Ymefack', NULL, NULL),
+(2699, 'Jasper Dahlhaus', 'Jasper_Dahlhaus', 'nl'),
+(2700, 'Ramazan Bayram', NULL, NULL),
+(2701, 'Édouard Michut', 'Édouard_Michut', 'nl'),
+(2702, 'Tristan Schenkhuizen', NULL, NULL),
+(2703, 'Darijo Grujčić', NULL, NULL),
+(2704, 'Samuel Christopher Bastien Binda', NULL, NULL),
+(2705, 'Josip Mitrović', NULL, NULL),
+(2706, 'Luka Tunjić', NULL, NULL);
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" (
 	"seasonId"	INTEGER NOT NULL,
