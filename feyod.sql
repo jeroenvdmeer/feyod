@@ -13239,13 +13239,13 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2695, 'Stefan Ortega', 'Stefan_Ortega', 'en'),
 (2696, 'Rúben Dias', 'Rúben_Dias', 'en'),
 (2697, 'Makan Aïko', 'Makan_Aïko', 'nl'),
-(2698, 'Donfack Ryan Gloire Fosso Ymefack', NULL, NULL),
+(2698, 'Ryan Fosso', NULL, NULL),
 (2699, 'Jasper Dahlhaus', 'Jasper_Dahlhaus', 'nl'),
 (2700, 'Ramazan Bayram', NULL, NULL),
 (2701, 'Édouard Michut', 'Édouard_Michut', 'nl'),
 (2702, 'Tristan Schenkhuizen', NULL, NULL),
 (2703, 'Darijo Grujčić', NULL, NULL),
-(2704, 'Samuel Christopher Bastien Binda', NULL, NULL),
+(2704, 'Samuel Bastien', 'Samuel_Bastien', 'nl'),
 (2705, 'Josip Mitrović', NULL, NULL),
 (2706, 'Luka Tunjić', NULL, NULL);
 DROP TABLE IF EXISTS "seasons";
