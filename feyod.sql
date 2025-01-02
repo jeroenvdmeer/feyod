@@ -51,7 +51,9 @@ INSERT INTO cards (matchId, playerId, cardType, minute) VALUES
 (2294, 2129, 'YC', 20),
 (2294, 2618, 'YC', 85),
 (2294, 1462, 'YC', 62),
-(2294, 2622, 'YC', 47);
+(2294, 2622, 'YC', 47),
+(2295, 2045, 'YC', 97),
+(2295, 1455, 'YC', 27);
 DROP TABLE IF EXISTS "clubs";
 CREATE TABLE "clubs" (
 	"clubId"	INTEGER NOT NULL,
@@ -7204,7 +7206,9 @@ INSERT INTO goals (matchId, playerId, scoreHomeTeam, scoreAwayTeam, minute, extr
 (2293, 2597, 0, 3, 36, NULL),
 (2293, 1454, 0, 4, 44, NULL),
 (2294, 1459, 1, 0, 34, NULL),
-(2294, 1251, 2, 0, 74, NULL);
+(2294, 1251, 2, 0, 74, NULL),
+(2295, 1606, 1, 0, 34, NULL),
+(2295, 2164, 1, 1, 88, NULL);
 DROP TABLE IF EXISTS "lineups";
 CREATE TABLE "lineups" (
 	"matchId"	INTEGER NOT NULL,
@@ -7536,7 +7540,49 @@ INSERT INTO lineups (matchId, playerId, clubId, starting) VALUES
 (2294, 2627, 30, 1),
 (2294, 2628, 30, 0),
 (2294, 2629, 30, 0),
-(2294, 2630, 30, 1);
+(2294, 2630, 30, 1),
+(2295, 2291, 31, 1),
+(2295, 1173, 31, 1),
+(2295, 946, 31, 1),
+(2295, 1730, 31, 1),
+(2295, 1608, 31, 1),
+(2295, 1670, 31, 1),
+(2295, 1446, 31, 1),
+(2295, 2001, 31, 1),
+(2295, 1607, 31, 1),
+(2295, 1606, 31, 1),
+(2295, 2037, 31, 0),
+(2295, 2286, 31, 0),
+(2295, 2187, 31, 0),
+(2295, 2295, 31, 0),
+(2295, 1358, 31, 0),
+(2295, 2176, 31, 0),
+(2295, 1609, 31, 0),
+(2295, 2045, 31, 0),
+(2295, 1247, 20, 1),
+(2295, 1454, 20, 1),
+(2295, 2164, 20, 1),
+(2295, 2135, 20, 1),
+(2295, 1257, 31, 1),
+(2295, 1262, 20, 1),
+(2295, 1462, 20, 1),
+(2295, 2129, 20, 1),
+(2295, 1162, 20, 0),
+(2295, 2128, 20, 0),
+(2295, 2169, 20, 0),
+(2295, 2104, 20, 0),
+(2295, 2033, 20, 0),
+(2295, 1478, 20, 0),
+(2295, 2061, 20, 0),
+(2295, 2283, 20, 0),
+(2295, 2117, 20, 0),
+(2295, 1391, 20, 0),
+(2295, 1755, 20, 0),
+(2295, 1460, 20, 0),
+(2295, 1455, 20, 1),
+(2295, 1251, 20, 1),
+(2295, 1258, 20, 1),
+(2295, 1459, 20, 1);
 DROP TABLE IF EXISTS "matches";
 CREATE TABLE "matches" (
 	"matchId"	INTEGER NOT NULL,
@@ -9850,7 +9896,8 @@ INSERT INTO matches (matchId, dateAndTime, seasonId, homeClubId, homeClubName, h
 (2291, '2024-08-25T12:30:00Z', 294, 42, 'Sparta Rotterdam', 1, NULL, 20, 'Feyenoord', 1, NULL, 0),
 (2292, '2024-09-14T16:45:00Z', 294, 15, 'FC Groningen', 2, NULL, 20, 'Feyenoord', 2, NULL, 0),
 (2293, '2024-09-19T16:45:00Z', 295, 20, 'Feyenoord', 0, NULL, 74, 'Bayer Leverkusen', 4, NULL, 0),
-(2294, '2024-09-22T12:30:00Z', 294, 20, 'Feyenoord', 2, NULL, 30, 'NAC Breda', 0, NULL, 0);
+(2294, '2024-09-22T12:30:00Z', 294, 20, 'Feyenoord', 2, NULL, 30, 'NAC Breda', 0, NULL, 0),
+(2295, '2024-09-28T16:45:00Z', 294, 31, 'N.E.C.', 1, NULL, 20, 'Feyenoord', 1, NULL, 0);
 DROP TABLE IF EXISTS "players";
 CREATE TABLE "players" (
 	"playerId"	INTEGER NOT NULL,
