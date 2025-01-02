@@ -12404,10 +12404,10 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2595, 'Jonathan Tah', 'Jonathan_Tah', 'en'),
 (2596, 'Amine Adli', 'Amine_Adli', 'en'),
 (2597, 'Florian Wirtz', 'Florian_Wirtz', 'en'),
-(2598, 'Lukáš Hrádecký', NULL, 'en'),
+(2598, 'Lukáš Hrádecký', 'Lukas_Hradecky', 'en'),
 (2599, 'Matěj Kovář', 'Matěj_Kovář', 'en'),
 (2600, 'Robert Andrich', 'Robert_Andrich', 'en'),
-(2601, 'Alejandro Grimaldo García', NULL, 'en'),
+(2601, 'Alejandro Grimaldo García', 'Álex_Grimaldo', 'en'),
 (2602, 'Jeremie Frimpong', 'Jeremie_Frimpong', 'en'),
 (2603, 'Victor Boniface', 'Victor_Boniface', 'en'),
 (2604, 'Nordi Mukiele', 'Nordi_Mukiele', 'en'),
@@ -12419,7 +12419,7 @@ INSERT INTO players (playerId, playerName, wikiKey, wikiLang) VALUES
 (2610, 'Piero Hincapié', 'Piero_Hincapié', 'en'),
 (2611, 'Exequiel Palacios', 'Exequiel_Palacios', 'en'),
 (2612, 'Edmond Tapsoba', 'Edmond_Tapsoba', 'en'),
-(2613, 'Arthur Augusto de Matos Soares', NULL, 'en');
+(2613, 'Arthur Augusto de Matos Soares', 'Arthur_(footballer,_born_2003)', 'en');
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" (
 	"seasonId"	INTEGER NOT NULL,
