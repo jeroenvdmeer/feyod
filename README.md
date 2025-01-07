@@ -19,3 +19,6 @@ This initiative is dedicated to making match data of the Dutch football club Fey
 
 ## Contribution
 Contributions from the community are always welcome! Whether it's adding more data or enhancing documentation, your input is invaluable.
+
+## Disclaimer
+This initiative is not affiliated with Feyenoord Rotterdam N.V.
