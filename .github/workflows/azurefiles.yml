@@ -1,0 +1,42 @@
+name: Build and Upload feyod.db to Azure Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Build SQLite Database
+        run: |
+          echo "Building feyod.db..."
+          rm -f feyod.db # Ensure clean start
+          sqlite3 feyod.db < feyod.sql
+          echo "Build complete."
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} # Store SP JSON as GitHub secret
+
+      - name: Upload feyod.db to Azure Files
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az storage file upload \
+              --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
+              --share-name ${{ secrets.AZURE_FILE_SHARE_NAME }} \
+              --source "feyod.db" \
+              --path "feyod.db" \
+              --auth-mode login # Use the logged-in SP credentials
+            echo "Upload complete."
