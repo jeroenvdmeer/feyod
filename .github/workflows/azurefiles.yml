@@ -39,6 +39,5 @@ jobs:
               --source "feyod.db" \
               --path "feyod.db" \
               --auth-mode login \
-              --enable-file-backup-request-intent \
-              --debug
+              --enable-file-backup-request-intent
             echo "Upload complete."
