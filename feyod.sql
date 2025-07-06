@@ -95752,7 +95752,8 @@ INSERT INTO "seasons" ("seasonId","seasonStartYear","competitionId") VALUES (1,1
  (297,2023,16),
  (298,1993,17),
  (299,2023,21),
- (300,2023,7);
+ (300,2023,7),
+ (301,2025,33);
 INSERT INTO "substitutions" ("matchId","playerIdOut","playerIdIn","minute") VALUES (2301,1920,1917,85),
  (2301,1922,2634,69),
  (2301,2117,1247,68),
