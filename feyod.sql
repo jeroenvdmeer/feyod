@@ -95101,7 +95101,9 @@ INSERT INTO "players" ("playerId","playerName","wikiKey","wikiLang") VALUES (1,'
  (8803,'Dion Versluis','Dion_Versluis','nl'),
  (8804,'Brahim Ghalidi','Brahim_Ghalidi','nl'),
  (8805,'İsmail Yüksek','İsmail_Yüksek','en'),
- (8806,'Anderson Souza Conceição',NULL,NULL);
+ (8806,'Anderson Souza Conceição',NULL,NULL),
+ (8807,'Stijn Middendorp',NULL,NULL),
+ (8808,'Tijmen Holla',NULL,NULL);
 INSERT INTO "seasons" ("seasonId","seasonStartYear","competitionId") VALUES (1,1945,32),
  (2,1946,31),
  (3,1947,3),
