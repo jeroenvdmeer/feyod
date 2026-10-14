@@ -1,9 +1,11 @@
 """Publication helpers: HF dataset card rendering, HF upload, release notes."""
 
+import json
 import re
+import sqlite3
 from pathlib import Path
 
-from .build import BuildError
+from .build import BuildError, check_schema
 
 REPO_ID = "jeroenvdmeer/feyod"
 REPO_TYPE = "dataset"
@@ -12,7 +14,8 @@ DELETE_PATTERNS = ["*.parquet", "*.db", "*.sql"]
 RELEASE_BASE = "https://github.com/jeroenvdmeer/feyod/releases/latest/download/"
 RELEASE_ASSETS = ("feyod.db", "feyod-csv.zip", "feyod.sql")
 
-_PLACEHOLDER = re.compile(r"\{\{.*?\}\}")
+SCHEMA_PATH = Path(__file__).resolve().parent.parent / "schema" / "expected_schema.json"
+_PLACEHOLDER = re.compile(r"\{\{[\s\S]*?\}\}")
 
 
 class PublishError(BuildError):
@@ -40,12 +43,40 @@ def render_card(template: str, manifest: dict) -> str:
     return out
 
 
+def verify_hf_folder(folder) -> None:
+    """Refuse anything but a complete, schema-clean output of a successful build."""
+    folder = Path(folder)
+    if not folder.is_dir():
+        raise PublishError(f"upload folder {folder} does not exist")
+    expected = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    want = {f"{t}.parquet" for t in expected} | {"feyod.db", "README.md"}
+    have = {p.name for p in folder.iterdir()}
+    if have != want or any(not p.is_file() for p in folder.iterdir()):
+        raise PublishError(
+            f"{folder} is not an exact build output: missing {sorted(want - have)}, "
+            f"unexpected {sorted(have - want)}"
+        )
+    empty = [n for n in sorted(want) if (folder / n).stat().st_size == 0]
+    if empty:
+        raise PublishError(f"empty files in {folder}: {empty}")
+    if not (folder.parent / "manifest.json").is_file():
+        raise PublishError(f"{folder.parent / 'manifest.json'} missing; run `build` first")
+    uri = (folder / "feyod.db").resolve().as_uri() + "?mode=ro"
+    try:
+        conn = sqlite3.connect(uri, uri=True)
+        try:
+            check_schema(conn, expected)
+        finally:
+            conn.close()
+    except sqlite3.Error as exc:
+        raise PublishError(f"feyod.db unreadable: {exc}") from exc
+
+
 def upload_hf(folder, commit_message, token, api=None) -> None:
     """Upload `folder` to the HF dataset repo, mirroring it (D5). Errors propagate."""
     if not token or not str(token).strip():
         raise PublishError("HF_TOKEN is missing or empty; refusing to upload")
-    if not Path(folder).is_dir():
-        raise PublishError(f"upload folder {folder} does not exist")
+    verify_hf_folder(folder)
     if api is None:
         from huggingface_hub import HfApi
 

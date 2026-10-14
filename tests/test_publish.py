@@ -9,6 +9,7 @@ import pytest
 import yaml
 
 from feyod_formats import __main__ as cli
+from feyod_formats import build
 from feyod_formats import publish
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -40,6 +41,16 @@ def test_render_card_fails_on_leftover_placeholder():
         publish.render_card("x {{UNKNOWN}} {{SOURCE_SHA}}", MANIFEST)
 
 
+@pytest.fixture
+def built(mini_sql_path, tmp_path):
+    out = tmp_path / "build"
+    rc = cli.main(
+        ["build", "--sql", str(mini_sql_path), "--out", str(out), "--source-sha", "deadbeef"]
+    )
+    assert rc == 0
+    return out
+
+
 class FakeApi:
     def __init__(self):
         self.calls = []
@@ -48,14 +59,14 @@ class FakeApi:
         self.calls.append(kwargs)
 
 
-def test_upload_hf_calls_api_strictly(tmp_path):
+def test_upload_hf_calls_api_strictly(built):
     api = FakeApi()
-    publish.upload_hf(tmp_path, "msg", "tok", api=api)
+    publish.upload_hf(built / "hf", "msg", "tok", api=api)
     assert api.calls == [
         {
             "repo_id": "jeroenvdmeer/feyod",
             "repo_type": "dataset",
-            "folder_path": str(tmp_path),
+            "folder_path": str(built / "hf"),
             "commit_message": "msg",
             "delete_patterns": ["*.parquet", "*.db", "*.sql"],
             "token": "tok",
@@ -95,16 +106,6 @@ def test_release_notes():
     base = "https://github.com/jeroenvdmeer/feyod/releases/latest/download/"
     for a in ("feyod.db", "feyod-csv.zip", "feyod.sql"):
         assert base + a in notes
-
-
-@pytest.fixture
-def built(mini_sql_path, tmp_path):
-    out = tmp_path / "build"
-    rc = cli.main(
-        ["build", "--sql", str(mini_sql_path), "--out", str(out), "--source-sha", "deadbeef"]
-    )
-    assert rc == 0
-    return out
 
 
 def test_build_end_to_end_tree(built):
@@ -148,16 +149,16 @@ def test_build_error_exits_nonzero(tmp_path, capsys):
     assert "loading" in capsys.readouterr().err
 
 
-def test_upload_hf_cli_missing_token_exits_1(tmp_path, monkeypatch, capsys):
-    (tmp_path / "hf").mkdir()
+def test_upload_hf_cli_missing_token_exits_1(built, monkeypatch, capsys):
+    tmp_path = built
     monkeypatch.delenv("HF_TOKEN", raising=False)
     rc = cli.main(["upload-hf", "--out", str(tmp_path), "--commit-message", "m"])
     assert rc == 1
     assert "HF_TOKEN" in capsys.readouterr().err
 
 
-def test_upload_hf_cli_uses_env_token(tmp_path, monkeypatch):
-    (tmp_path / "hf").mkdir()
+def test_upload_hf_cli_uses_env_token(built, monkeypatch):
+    tmp_path = built
     monkeypatch.setenv("HF_TOKEN", "secret")
     seen = {}
 
@@ -174,7 +175,7 @@ def test_upload_hf_cli_missing_folder_exits_1(tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("HF_TOKEN", "secret")
     rc = cli.main(["upload-hf", "--out", str(tmp_path), "--commit-message", "m"])
     assert rc == 1
-    assert "build" in capsys.readouterr().err
+    assert "does not exist" in capsys.readouterr().err
 
 
 def test_module_entrypoint_help():
@@ -185,3 +186,92 @@ def test_module_entrypoint_help():
         text=True,
     )
     assert r.returncode == 0
+
+
+def test_render_card_placeholder_across_newline():
+    with pytest.raises(publish.PublishError):
+        publish.render_card("a {{FOO\nBAR}} b", MANIFEST)
+
+
+def _spy_api(monkeypatch):
+    api = FakeApi()
+    import huggingface_hub
+
+    monkeypatch.setattr(huggingface_hub, "HfApi", lambda *a, **k: api)
+    return api
+
+
+def _refused(folder, api):
+    with pytest.raises(build.BuildError):
+        publish.upload_hf(folder, "m", "tok", api=api)
+    assert api.calls == []
+
+
+def test_upload_refused_empty_folder(tmp_path):
+    (tmp_path / "hf").mkdir()
+    _refused(tmp_path / "hf", FakeApi())
+
+
+def test_upload_refused_missing_matches(built):
+    (built / "hf" / "matches.parquet").unlink()
+    _refused(built / "hf", FakeApi())
+
+
+def test_upload_refused_stale_sql(built):
+    (built / "hf" / "feyod.sql").write_text("x", encoding="utf-8")
+    _refused(built / "hf", FakeApi())
+
+
+def test_upload_refused_empty_file(built):
+    (built / "hf" / "goals.parquet").write_bytes(b"")
+    _refused(built / "hf", FakeApi())
+
+
+def test_upload_refused_without_manifest(built):
+    (built / "manifest.json").unlink()
+    _refused(built / "hf", FakeApi())
+
+
+def test_upload_refused_db_with_extra_column(built):
+    import sqlite3
+
+    con = sqlite3.connect(built / "hf" / "feyod.db")
+    con.execute("ALTER TABLE matches ADD COLUMN delpherSourceUrl TEXT")
+    con.commit()
+    con.close()
+    _refused(built / "hf", FakeApi())
+
+
+def _leaky_sql(mini_sql_path, tmp_path):
+    text = mini_sql_path.read_text(encoding="utf-8")
+    bad = tmp_path / "leaky.sql"
+    bad.write_text(
+        text + "\nALTER TABLE matches ADD COLUMN delpherSourceUrl TEXT;\n",
+        encoding="utf-8",
+    )
+    return bad
+
+
+def test_failed_build_fresh_out_leaves_nothing(mini_sql_path, tmp_path, monkeypatch, capsys):
+    bad = _leaky_sql(mini_sql_path, tmp_path)
+    out = tmp_path / "fresh"
+    assert cli.main(["build", "--sql", str(bad), "--out", str(out)]) == 1
+    assert not (out / "hf").exists()
+    assert not list(out.glob(".staging-*"))
+    api = _spy_api(monkeypatch)
+    monkeypatch.setenv("HF_TOKEN", "t")
+    assert cli.main(["upload-hf", "--out", str(out), "--commit-message", "m"]) == 1
+    assert api.calls == []
+
+
+def test_failed_build_over_good_build_removes_old(built, mini_sql_path, tmp_path, monkeypatch):
+    bad = _leaky_sql(mini_sql_path, tmp_path)
+    assert (built / "hf").exists()
+    assert cli.main(["build", "--sql", str(bad), "--out", str(built)]) == 1
+    for name in ("hf", "feyod-csv.zip", "manifest.json", "release-notes.md"):
+        assert not (built / name).exists()
+    assert not list(built.glob(".staging-*"))
+    api = _spy_api(monkeypatch)
+    monkeypatch.setenv("HF_TOKEN", "t")
+    assert cli.main(["upload-hf", "--out", str(built), "--commit-message", "m"]) == 1
+    assert api.calls == []

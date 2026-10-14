@@ -3,7 +3,9 @@
 import argparse
 import json
 import os
+import shutil
 import sys
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,37 +17,62 @@ CARD_TEMPLATE = ROOT / "hf" / "README.md"
 LICENSE = ROOT / "LICENSE"
 
 
-def cmd_build(args) -> int:
-    out = Path(args.out)
-    hf = out / "hf"
-    out.mkdir(parents=True, exist_ok=True)
-    hf.mkdir(parents=True, exist_ok=True)
+def _remove(path: Path) -> None:
+    if path.is_dir():
+        shutil.rmtree(path, ignore_errors=True)
+    elif path.exists():
+        path.unlink()
+
+
+ARTIFACTS = ("hf", "feyod-csv.zip", "manifest.json", "release-notes.md")
+
+
+def _build_into(args, stage: Path) -> int:
+    hf = stage / "hf"
+    hf.mkdir()
     expected = json.loads(SCHEMA.read_text(encoding="utf-8"))
-    db_path = hf / "feyod.db"
-    conn = build.load_dump(args.sql, db_path)
+    conn = build.load_dump(args.sql, hf / "feyod.db")
     try:
         counts = build.run_gate(conn, expected)
         export.export_parquet(conn, hf, expected)
-        export.export_csv_zip(conn, out / "feyod-csv.zip", expected, LICENSE)
+        export.export_csv_zip(conn, stage / "feyod-csv.zip", expected, LICENSE)
     finally:
         conn.close()
     build_date = datetime.now(timezone.utc).date().isoformat()
-    manifest_path = out / "manifest.json"
+    manifest_path = stage / "manifest.json"
     build.write_manifest(manifest_path, counts, args.source_sha, build_date)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     card = publish.render_card(CARD_TEMPLATE.read_text(encoding="utf-8"), manifest)
     (hf / "README.md").write_text(card, encoding="utf-8")
-    (out / "release-notes.md").write_text(
+    (stage / "release-notes.md").write_text(
         publish.release_notes(manifest), encoding="utf-8"
     )
-    print(f"built {sum(counts.values())} rows in {len(counts)} tables into {out}")
+    return sum(counts.values()), len(counts)
+
+
+def cmd_build(args) -> int:
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    stage = Path(tempfile.mkdtemp(prefix=".staging-", dir=out))
+    try:
+        rows, tables = _build_into(args, stage)
+        for name in ARTIFACTS:
+            _remove(out / name)
+        for name in ARTIFACTS:
+            shutil.move(str(stage / name), str(out / name))
+    except BaseException:
+        # never leave a stale or partial output that upload-hf could publish
+        for name in ARTIFACTS:
+            _remove(out / name)
+        raise
+    finally:
+        shutil.rmtree(stage, ignore_errors=True)
+    print(f"built {rows} rows in {tables} tables into {out}")
     return 0
 
 
 def cmd_upload_hf(args) -> int:
     folder = Path(args.out) / "hf"
-    if not folder.is_dir():
-        raise publish.PublishError(f"{folder} not found; run `build` first")
     publish.upload_hf(folder, args.commit_message, os.environ.get("HF_TOKEN"))
     print(f"uploaded {folder} to {publish.REPO_ID}")
     return 0
