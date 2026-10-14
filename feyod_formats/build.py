@@ -24,6 +24,12 @@ def load_dump(sql_path, db_path) -> sqlite3.Connection:
     except sqlite3.Error as exc:
         conn.close()
         raise BuildError(f"loading {sql_path} failed: {exc}") from exc
+    if conn.in_transaction:
+        conn.close()
+        raise BuildError(
+            f"{sql_path} left a transaction open (missing COMMIT?); "
+            "the db file on disk would be empty"
+        )
     return conn
 
 
@@ -40,21 +46,57 @@ def check_integrity(conn) -> None:
         )
 
 
+# SQLite-internal tables that may exist; everything else must be in the allowlist.
+# Exact names only (a LIKE 'sqlite_%' filter would also match e.g. 'sqlite0x').
+INTERNAL_TABLES = frozenset(
+    {"sqlite_sequence", "sqlite_stat1", "sqlite_stat2", "sqlite_stat3", "sqlite_stat4"}
+)
+AUTOINDEX_PREFIX = "sqlite_autoindex_"
+
+
 def _actual_schema(conn) -> dict:
     tables = [
         r[0]
-        for r in conn.execute(
-            "SELECT name FROM sqlite_master WHERE type='table' "
-            "AND name NOT LIKE 'sqlite_%'"
-        )
+        for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")
+        if r[0] not in INTERNAL_TABLES
     ]
+    # table_xinfo (not table_info) also lists generated/hidden columns
     return {
-        t: [r[1] for r in conn.execute(f'PRAGMA table_info("{t}")')] for t in tables
+        t: [r[1] for r in conn.execute(f'PRAGMA table_xinfo("{t}")')] for t in tables
     }
+
+
+def _check_no_hidden_objects(conn) -> None:
+    problems = []
+    for typ, name in conn.execute(
+        "SELECT type, name FROM sqlite_master WHERE type != 'table'"
+    ):
+        if typ == "index" and name.startswith(AUTOINDEX_PREFIX):
+            continue
+        problems.append(f"{typ} {name!r}")
+    if problems:
+        raise BuildError(
+            "unexpected schema objects (only tables and autoindexes allowed): "
+            + ", ".join(problems)
+        )
+    for t in sorted(INTERNAL_TABLES - {"sqlite_sequence"}):
+        exists = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (t,)
+        ).fetchone()
+        if exists and conn.execute(f'SELECT COUNT(*) FROM "{t}"').fetchone()[0]:
+            raise BuildError(f"internal table {t!r} contains rows")
+    temp = conn.execute("SELECT type, name FROM sqlite_temp_master").fetchall()
+    if temp:
+        raise BuildError(f"temp schema objects present: {temp}")
+    # 'temp' is listed once touched; its contents were checked above
+    dbs = [r[1] for r in conn.execute("PRAGMA database_list") if r[1] != "temp"]
+    if dbs != ["main"]:
+        raise BuildError(f"unexpected databases attached: {dbs}")
 
 
 def check_schema(conn, expected) -> None:
     """Allowlist gate (D1): tables and ordered columns must match exactly."""
+    _check_no_hidden_objects(conn)
     actual = _actual_schema(conn)
     problems = []
     extra_tables = sorted(set(actual) - set(expected))
@@ -104,3 +146,11 @@ def write_manifest(path, counts, source_sha, build_date) -> None:
     Path(path).write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
+
+
+def run_gate(conn, expected) -> dict:
+    """Run all checks in the required order; return the row counts."""
+    check_integrity(conn)
+    check_schema(conn, expected)
+    check_nonempty(conn)
+    return row_counts(conn)

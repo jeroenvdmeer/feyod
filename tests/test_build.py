@@ -96,21 +96,22 @@ def test_column_order_matters(tmp_path, mini_text, expected):
         build.check_schema(conn, exp)
 
 
-def test_missing_table_fails(tmp_path, mini_text, expected):
+def test_table_missing_from_allowlist_fails(tmp_path, mini_text, expected):
     exp = dict(expected)
-    del exp["cards"]  # dump now has a table the allowlist lacks -> extra
+    del exp["cards"]  # dump has a table the allowlist lacks -> extra
     conn = load(tmp_path, mini_text)
     with pytest.raises(BuildError) as e:
         build.check_schema(conn, exp)
-    assert "cards" in str(e.value)
+    assert "extra tables" in str(e.value) and "cards" in str(e.value)
 
-    # and the real missing-table case: expected table absent from the db
-    conn2 = load(tmp_path, mini_text, "t2.db")
-    conn2.execute("PRAGMA foreign_keys = OFF")
-    conn2.execute('DROP TABLE "cards"')
-    with pytest.raises(BuildError) as e2:
-        build.check_schema(conn2, expected)
-    assert "cards" in str(e2.value)
+
+def test_missing_table_fails(tmp_path, mini_text, expected):
+    conn = load(tmp_path, mini_text)
+    conn.execute("PRAGMA foreign_keys = OFF")
+    conn.execute('DROP TABLE "cards"')
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "missing tables" in str(e.value) and "cards" in str(e.value)
 
 
 def test_empty_table_fails(tmp_path, mini_text):
@@ -164,3 +165,119 @@ def test_real_dump(tmp_path, expected):
         assert all(n > 0 for n in counts.values())
     finally:
         conn.close()
+
+
+# ---- fix round 1: bypasses found in review ----
+
+
+def inject(text, extra):
+    out = text.replace("COMMIT;", extra + "\nCOMMIT;")
+    assert out != text
+    return out
+
+
+def test_like_wildcard_table_name_fails(tmp_path, mini_text, expected):
+    text = inject(
+        mini_text,
+        'CREATE TABLE "sqlite0match_sources" (url TEXT);'
+        "INSERT INTO \"sqlite0match_sources\" VALUES ('http://leak');",
+    )
+    conn = load(tmp_path, text)
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "sqlite0match_sources" in str(e.value)
+
+
+def test_sqlite_stat_rows_fail(tmp_path, mini_text, expected):
+    conn = load(tmp_path, mini_text)
+    conn.execute("ANALYZE")
+    conn.execute("DELETE FROM sqlite_stat1")
+    build.check_schema(conn, expected)  # empty stat table is fine
+    conn.execute("INSERT INTO sqlite_stat1 VALUES ('matches', NULL, 'http://leak')")
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "sqlite_stat1" in str(e.value)
+
+
+def test_view_named_like_private_table_fails(tmp_path, mini_text, expected):
+    text = inject(mini_text, "CREATE VIEW match_sources AS SELECT matchId FROM matches;")
+    conn = load(tmp_path, text)
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "match_sources" in str(e.value)
+
+
+def test_view_adding_column_fails(tmp_path, mini_text, expected):
+    text = inject(
+        mini_text,
+        "CREATE VIEW matches_plus AS SELECT *, 'u' AS delpherSourceUrl FROM matches;",
+    )
+    conn = load(tmp_path, text)
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "matches_plus" in str(e.value)
+
+
+def test_trigger_fails(tmp_path, mini_text, expected):
+    text = inject(
+        mini_text,
+        "CREATE TRIGGER trg AFTER INSERT ON clubs BEGIN SELECT 1; END;",
+    )
+    conn = load(tmp_path, text)
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "trg" in str(e.value)
+
+
+def test_explicit_index_fails(tmp_path, mini_text, expected):
+    text = inject(mini_text, 'CREATE INDEX idx_x ON clubs("clubName");')
+    conn = load(tmp_path, text)
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "idx_x" in str(e.value)
+
+
+def test_generated_column_fails(tmp_path, mini_text, expected):
+    text = mini_text.replace(
+        'CREATE TABLE "matches" (',
+        "CREATE TABLE \"matches\" (\"delpherSourceUrl\" TEXT GENERATED ALWAYS AS ('u') VIRTUAL, ",
+        1,
+    )
+    assert text != mini_text
+    conn = load(tmp_path, text)
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "delpherSourceUrl" in str(e.value)
+
+
+def test_dump_without_commit_fails(tmp_path, mini_text):
+    text = mini_text.replace("COMMIT;", "")
+    assert text != mini_text
+    with pytest.raises(BuildError) as e:
+        load(tmp_path, text)
+    assert "transaction" in str(e.value)
+
+
+def test_temp_table_fails(tmp_path, mini_text, expected):
+    conn = load(tmp_path, mini_text)
+    conn.execute("CREATE TEMP TABLE match_media (url TEXT)")
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "temp" in str(e.value).lower()
+
+
+def test_attached_database_fails(tmp_path, mini_text, expected):
+    conn = load(tmp_path, mini_text)
+    conn.execute("ATTACH DATABASE ':memory:' AS other")
+    with pytest.raises(BuildError) as e:
+        build.check_schema(conn, expected)
+    assert "other" in str(e.value)
+
+
+def test_run_gate_happy_and_failing(tmp_path, mini_text, expected):
+    conn = load(tmp_path, mini_text)
+    counts = build.run_gate(conn, expected)
+    assert counts == build.row_counts(conn)
+    conn.execute('DELETE FROM "cards"')
+    with pytest.raises(BuildError):
+        build.run_gate(conn, expected)
