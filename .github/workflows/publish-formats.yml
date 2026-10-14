@@ -13,10 +13,6 @@ on:
   pull_request:
   workflow_dispatch:
 
-concurrency:
-  group: publish-formats
-  cancel-in-progress: false
-
 permissions:
   contents: read
 
@@ -27,6 +23,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
@@ -39,10 +37,15 @@ jobs:
     needs: test
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    concurrency:
+      group: publish-formats
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"

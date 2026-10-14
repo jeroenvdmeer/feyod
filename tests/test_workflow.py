@@ -3,7 +3,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-WF = ROOT / "tests" / ".." / ".github" / "workflows" / "publish-formats.yml"
+WF = ROOT / ".github" / "workflows" / "publish-formats.yml"
 
 
 def load():
@@ -65,10 +65,35 @@ def test_hf_token_only_via_env():
     assert len(hits) == 1 and "run" in hits[0]
 
 
-def test_concurrency_does_not_cancel():
+def test_concurrency_only_on_publish_job():
     _, doc, _ = load()
-    assert doc["concurrency"]["group"] == "publish-formats"
-    assert doc["concurrency"]["cancel-in-progress"] is False
+    assert "concurrency" not in doc
+    assert "concurrency" not in doc["jobs"]["test"]
+    c = doc["jobs"]["publish"]["concurrency"]
+    assert c["group"] == "publish-formats"
+    assert c["cancel-in-progress"] is False
+
+
+def test_checkout_does_not_persist_credentials():
+    _, doc, _ = load()
+    for job in doc["jobs"].values():
+        for s in job["steps"]:
+            if s.get("uses", "").startswith("actions/checkout"):
+                assert s["with"]["persist-credentials"] is False
+
+
+def test_hf_commit_message_form_and_release_order():
+    _, doc, _ = load()
+    runs = run_steps(doc["jobs"]["publish"])
+    hf = next(r for r in runs if "upload-hf" in r)
+    assert '--commit-message="' in hf
+    rel = next(r for r in runs if "gh release" in r)
+    assert "build/hf/feyod.db build/feyod-csv.zip feyod.sql --clobber" in rel
+    assert rel.index("gh release create") < rel.index("--clobber") < rel.index(
+        "gh release edit"
+    )
+    assert "--latest" in rel[rel.index("gh release edit") :]
+    assert runs.index(hf) < runs.index(rel)
 
 
 def test_permissions_least_privilege():
