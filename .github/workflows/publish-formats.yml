@@ -9,6 +9,9 @@ on:
       - schema/**
       - hf/**
       - requirements*.txt
+      - LICENSE
+      - tests/**
+      - pytest.ini
       - .github/workflows/publish-formats.yml
   pull_request:
   workflow_dispatch:

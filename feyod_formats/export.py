@@ -25,7 +25,7 @@ Format: UTF-8 (no BOM), comma-separated, RFC 4180 quoting, first row is the
 header, an empty field means NULL.
 
 Opening in Excel: do not double-click the file (Excel may guess the wrong
-encoding and garble names such as "Stale"). Instead use
+encoding and garble names such as "Ståle"). Instead use
 Data -> From Text/CSV, choose "65001: Unicode (UTF-8)" as file origin and
 comma as delimiter, then Load.
 """

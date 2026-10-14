@@ -32,6 +32,8 @@ def test_triggers():
     _, _, t = load()
     assert t["push"]["branches"] == ["main"]
     assert "feyod.sql" in t["push"]["paths"]
+    for p in ("LICENSE", "tests/**", "pytest.ini"):
+        assert p in t["push"]["paths"]
     assert "pull_request" in t
     assert "workflow_dispatch" in t
 

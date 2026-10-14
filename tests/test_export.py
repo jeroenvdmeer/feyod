@@ -113,3 +113,8 @@ def test_unknown_sqlite_type_fails(tmp_path):
 def test_column_mismatch_fails(conn, tmp_path):
     with pytest.raises(build.BuildError, match="clubs"):
         export.export_parquet(conn, tmp_path, {"clubs": ["clubId", "nope"]})
+
+
+def test_zip_readme_names_stale_with_diacritic(conn, expected, tmp_path):
+    with _zip(conn, expected, tmp_path) as zf:
+        assert "Ståle" in zf.read("README.txt").decode("utf-8")

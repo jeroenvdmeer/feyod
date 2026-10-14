@@ -281,3 +281,23 @@ def test_run_gate_happy_and_failing(tmp_path, mini_text, expected):
     conn.execute('DELETE FROM "cards"')
     with pytest.raises(BuildError):
         build.run_gate(conn, expected)
+
+
+def test_dropped_table_leaves_no_bytes_in_published_db(tmp_path, mini_text):
+    from feyod_formats.__main__ import main
+
+    marker = "SECRET-MARKER-delpher-" + "x" * 40
+    sql = tmp_path / "leaky.sql"
+    sql.write_text(
+        mini_text
+        + '\nCREATE TABLE "match_media" ("id" INTEGER, "url" TEXT);\n'
+        + "".join(
+            f"INSERT INTO \"match_media\" VALUES ({i},'{marker}{i}');\n"
+            for i in range(50)
+        )
+        + 'DROP TABLE "match_media";\n',
+        encoding="utf-8",
+    )
+    assert main(["build", "--sql", str(sql), "--out", str(tmp_path / "out")]) == 0
+    data = (tmp_path / "out" / "hf" / "feyod.db").read_bytes()
+    assert marker.encode() not in data

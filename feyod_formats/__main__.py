@@ -34,6 +34,8 @@ def _build_into(args, stage: Path) -> int:
     conn = build.load_dump(args.sql, hf / "feyod.db")
     try:
         counts = build.run_gate(conn, expected)
+        # Rewrite the file so dropped tables/columns leave no bytes behind.
+        conn.execute("VACUUM")
         export.export_parquet(conn, hf, expected)
         export.export_csv_zip(conn, stage / "feyod-csv.zip", expected, LICENSE)
     finally:
