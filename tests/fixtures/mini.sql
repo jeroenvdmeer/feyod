@@ -6,18 +6,18 @@ INSERT INTO "competitions" ("competitionId","competitionName") VALUES
  (1,'Eredivisie'),
  (2,'KNVB-Beker');
 DROP TABLE IF EXISTS "clubs";
-CREATE TABLE "clubs" ("clubId" INTEGER PRIMARY KEY, "clubName" TEXT NOT NULL, "wikiKey" TEXT, "wikiLang" TEXT);
-INSERT INTO "clubs" ("clubId","clubName","wikiKey","wikiLang") VALUES
- (1,'Feyenoord','Feyenoord','nl'),
- (2,'Go Ahead Eagles','Go_Ahead_Eagles','nl'),
- (3,'NAC ''12',NULL,NULL),
- (4,'Sparta, Rotterdam',NULL,NULL);
+CREATE TABLE "clubs" ("clubId" INTEGER PRIMARY KEY, "clubName" TEXT NOT NULL, "wikiKey" TEXT, "wikiLang" TEXT, "wikidataId" TEXT);
+INSERT INTO "clubs" ("clubId","clubName","wikiKey","wikiLang","wikidataId") VALUES
+ (1,'Feyenoord','Feyenoord','nl','Q134241'),
+ (2,'Go Ahead Eagles','Go_Ahead_Eagles','nl',NULL),
+ (3,'NAC ''12',NULL,NULL,NULL),
+ (4,'Sparta, Rotterdam',NULL,NULL,NULL);
 DROP TABLE IF EXISTS "players";
-CREATE TABLE "players" ("playerId" INTEGER PRIMARY KEY, "playerName" TEXT NOT NULL, "wikiKey" TEXT, "wikiLang" TEXT);
-INSERT INTO "players" ("playerId","playerName","wikiKey","wikiLang") VALUES
- (1,'Ruud Gullit','Ruud_Gullit','nl'),
- (2,'Ståle Solbakken','Ståle_Solbakken','no'),
- (3,'Jan Jansen',NULL,NULL);
+CREATE TABLE "players" ("playerId" INTEGER PRIMARY KEY, "playerName" TEXT NOT NULL, "wikiKey" TEXT, "wikiLang" TEXT, "wikidataId" TEXT);
+INSERT INTO "players" ("playerId","playerName","wikiKey","wikiLang","wikidataId") VALUES
+ (1,'Ruud Gullit','Ruud_Gullit','nl','Q57016'),
+ (2,'Ståle Solbakken','Ståle_Solbakken','no',NULL),
+ (3,'Jan Jansen',NULL,NULL,NULL);
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" ("seasonId" INTEGER PRIMARY KEY, "seasonStartYear" INTEGER NOT NULL, "competitionId" INTEGER NOT NULL REFERENCES "competitions"("competitionId") ON UPDATE CASCADE ON DELETE CASCADE);
 INSERT INTO "seasons" ("seasonId","seasonStartYear","competitionId") VALUES
