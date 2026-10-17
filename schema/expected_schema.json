@@ -1,0 +1,66 @@
+{
+  "cards": [
+    "matchId",
+    "playerId",
+    "cardType",
+    "minute"
+  ],
+  "clubs": [
+    "clubId",
+    "clubName",
+    "wikiKey",
+    "wikiLang",
+    "wikidataId"
+  ],
+  "competitions": [
+    "competitionId",
+    "competitionName"
+  ],
+  "goals": [
+    "matchId",
+    "playerId",
+    "scoreHomeTeam",
+    "scoreAwayTeam",
+    "minute",
+    "extratime"
+  ],
+  "lineups": [
+    "matchId",
+    "playerId",
+    "clubId",
+    "starting"
+  ],
+  "matches": [
+    "matchId",
+    "dateAndTime",
+    "seasonId",
+    "homeClubId",
+    "homeClubName",
+    "homeClubFinalScore",
+    "homeClubPenalties",
+    "awayClubId",
+    "awayClubName",
+    "awayClubFinalScore",
+    "awayClubPenalties",
+    "canceled",
+    "kickoffKnown"
+  ],
+  "players": [
+    "playerId",
+    "playerName",
+    "wikiKey",
+    "wikiLang",
+    "wikidataId"
+  ],
+  "seasons": [
+    "seasonId",
+    "seasonStartYear",
+    "competitionId"
+  ],
+  "substitutions": [
+    "matchId",
+    "playerIdOut",
+    "playerIdIn",
+    "minute"
+  ]
+}

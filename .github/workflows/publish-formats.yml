@@ -1,0 +1,85 @@
+name: Publish dataset formats
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - feyod.sql
+      - feyod_formats/**
+      - schema/**
+      - hf/**
+      - requirements*.txt
+      - LICENSE
+      - tests/**
+      - pytest.ini
+      - .github/workflows/publish-formats.yml
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -q
+
+  publish:
+    needs: test
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: publish-formats
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - run: pip install -r requirements.txt
+
+      - name: Build artifacts
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: python -m feyod_formats build --sql feyod.sql --out build --source-sha "$SOURCE_SHA"
+
+      - name: Upload to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          # The commit message is untrusted data: only ever expanded inside double quotes.
+          first=$(printf '%s' "$COMMIT_MSG" | head -n1 | tr -d '\r')
+          if [ -z "$first" ]; then first="Manual publish"; fi
+          short=$(printf '%s' "$SOURCE_SHA" | cut -c1-7)
+          python -m feyod_formats upload-hf --out build --commit-message="$first ($short)"
+
+      - name: Update rolling GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view dataset-latest >/dev/null 2>&1 || gh release create dataset-latest \
+            --title "Feyod dataset (laatste versie)" \
+            --notes-file build/release-notes.md \
+            --latest
+          gh release upload dataset-latest build/hf/feyod.db build/feyod-csv.zip feyod.sql --clobber
+          gh release edit dataset-latest --notes-file build/release-notes.md --latest
