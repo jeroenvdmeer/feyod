@@ -45,7 +45,7 @@ This dataset is not affiliated with Feyenoord Rotterdam N.V.
 
 ## Provenance
 
-Recent matches are harvested automatically by Feyenoord-matchcenter, the project's data harvester. Historical matches come from historical sources (match books, archives, and contemporary newspapers and magazines) and are added after verification. The Parquet files and `feyod.db` are generated from the published `feyod.sql` and are faithful to it: column names, flags (0/1 integers) and date strings are unchanged.
+Recent matches are harvested automatically. Historical matches come from historical sources (books, archives, and contemporary newspapers and 'De Feijenoorder' magazines) and are added after verification. The Parquet files and `feyod.db` are generated from the published `feyod.sql` and are faithful to it: column names, flags (0/1 integers) and date strings are unchanged.
 
 Built from source commit `{{SOURCE_SHA}}` on `{{BUILD_DATE}}`.
 
