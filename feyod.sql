@@ -10075,7 +10075,17 @@ INSERT INTO "players" ("playerId","playerName","wikiKey","wikiLang","wikidataId"
  (9760,'Nolhan Courtens','Nolhan_Courtens','nl','Q135394506'),
  (9761,'Darling Bladi',NULL,NULL,NULL),
  (9762,'Marko Farji','Marko_Farji','nl','Q126373302'),
- (9763,'Lanroy Machine',NULL,NULL,NULL);
+ (9763,'Lanroy Machine',NULL,NULL,NULL),
+ (9764,'Kasey Bos','Kasey_Bos','nl','Q131544724'),
+ (9765,'Ágúst Orri Þorsteinsson','Ágúst_Orri_Þorsteinsson','nl','Q111034427'),
+ (9766,'Mario Domínguez Franco',NULL,NULL,NULL),
+ (9767,'Celton Biai','Celton_Biai','nl','Q115721625'),
+ (9768,'David Garden','David_Garden','nl','Q132760008'),
+ (9769,'Quinten Kraaivanger',NULL,NULL,NULL),
+ (9770,'Yacqub Finey','Yacqub_Finey','nl','Q140855182'),
+ (9771,'Valentin Sulzbacher','Valentin_Sulzbacher','nl','Q111648843'),
+ (9772,'Eric da Silva Moreira','Eric_da_Silva_Moreira','nl','Q118611497'),
+ (9773,'Daniël van Vianen','Daniël_van_Vianen','nl','Q132354532');
 DROP TABLE IF EXISTS "seasons";
 CREATE TABLE "seasons" ("seasonId" INTEGER PRIMARY KEY, "seasonStartYear" INTEGER NOT NULL, "competitionId" INTEGER NOT NULL REFERENCES "competitions"("competitionId") ON UPDATE CASCADE ON DELETE CASCADE);
 INSERT INTO "seasons" ("seasonId","seasonStartYear","competitionId") VALUES
@@ -14368,7 +14378,8 @@ INSERT INTO "matches" ("matchId","dateAndTime","seasonId","homeClubId","homeClub
  (4124,'2026-10-25T13:30:00Z',306,33,'PSV',1,NULL,20,'Feyenoord',1,NULL,0,NULL),
  (4200,'2026-10-31T15:30:00Z',306,20,'Feyenoord',1,NULL,21,'Fortuna Sittard',1,NULL,0,NULL),
  (4220,'2026-11-03T20:00:00Z',307,20,'Feyenoord',0,NULL,154,'Internazionale',3,NULL,0,NULL),
- (4265,'2026-11-08T11:15:00Z',306,54,'sc Heerenveen',5,NULL,20,'Feyenoord',3,NULL,0,NULL);
+ (4265,'2026-11-08T11:15:00Z',306,54,'sc Heerenveen',5,NULL,20,'Feyenoord',3,NULL,0,NULL),
+ (4309,'2026-11-21T17:45:00Z',306,20,'Feyenoord',2,NULL,50,'Excelsior',3,NULL,0,NULL);
 DROP TABLE IF EXISTS "lineups";
 CREATE TABLE "lineups" ("matchId" INTEGER NOT NULL REFERENCES "matches"("matchId") ON UPDATE CASCADE ON DELETE CASCADE, "playerId" INTEGER NOT NULL REFERENCES "players"("playerId") ON UPDATE CASCADE ON DELETE CASCADE, "clubId" INTEGER NOT NULL REFERENCES "clubs"("clubId") ON UPDATE CASCADE ON DELETE CASCADE, "starting" INTEGER NOT NULL, PRIMARY KEY ("matchId", "playerId"));
 INSERT INTO "lineups" ("matchId","playerId","clubId","starting") VALUES
@@ -92016,7 +92027,51 @@ INSERT INTO "lineups" ("matchId","playerId","clubId","starting") VALUES
  (4265,9760,54,1),
  (4265,9761,54,0),
  (4265,9762,54,0),
- (4265,9763,54,0);
+ (4265,9763,54,0),
+ (4309,1239,50,0),
+ (4309,1244,20,1),
+ (4309,1247,20,0),
+ (4309,1461,50,1),
+ (4309,1481,20,0),
+ (4309,1540,50,1),
+ (4309,1554,20,0),
+ (4309,1569,20,1),
+ (4309,1609,50,1),
+ (4309,1755,20,1),
+ (4309,1941,50,1),
+ (4309,2117,20,1),
+ (4309,2148,50,1),
+ (4309,2188,50,1),
+ (4309,2632,50,1),
+ (4309,2755,50,0),
+ (4309,5036,20,0),
+ (4309,5039,20,0),
+ (4309,5061,20,0),
+ (4309,6439,50,0),
+ (4309,8645,20,1),
+ (4309,8778,20,0),
+ (4309,8780,20,1),
+ (4309,8781,20,0),
+ (4309,8810,50,0),
+ (4309,9354,20,0),
+ (4309,9451,20,1),
+ (4309,9516,50,1),
+ (4309,9545,20,1),
+ (4309,9547,20,1),
+ (4309,9549,20,1),
+ (4309,9553,20,1),
+ (4309,9589,20,0),
+ (4309,9619,20,0),
+ (4309,9764,50,1),
+ (4309,9765,50,1),
+ (4309,9766,50,1),
+ (4309,9767,50,0),
+ (4309,9768,50,0),
+ (4309,9769,50,0),
+ (4309,9770,50,0),
+ (4309,9771,50,0),
+ (4309,9772,50,0),
+ (4309,9773,50,0);
 DROP TABLE IF EXISTS "goals";
 CREATE TABLE "goals" ("matchId" INTEGER NOT NULL REFERENCES "matches"("matchId") ON UPDATE CASCADE ON DELETE CASCADE, "playerId" INTEGER NOT NULL REFERENCES "players"("playerId") ON UPDATE CASCADE ON DELETE CASCADE, "scoreHomeTeam" INTEGER NOT NULL, "scoreAwayTeam" INTEGER NOT NULL, "minute" INTEGER, "extratime" INTEGER, PRIMARY KEY ("matchId", "playerId", "scoreHomeTeam", "scoreAwayTeam"));
 INSERT INTO "goals" ("matchId","playerId","scoreHomeTeam","scoreAwayTeam","minute","extratime") VALUES
@@ -101630,7 +101685,12 @@ INSERT INTO "goals" ("matchId","playerId","scoreHomeTeam","scoreAwayTeam","minut
  (4265,2574,5,3,93,NULL),
  (4265,2674,2,2,47,NULL),
  (4265,9260,1,2,48,NULL),
- (4265,9553,0,2,31,NULL);
+ (4265,9553,0,2,31,NULL),
+ (4309,1941,1,3,58,NULL),
+ (4309,2117,1,0,2,NULL),
+ (4309,2148,2,3,67,NULL),
+ (4309,9516,1,2,40,NULL),
+ (4309,9766,1,1,6,NULL);
 DROP TABLE IF EXISTS "cards";
 CREATE TABLE "cards" ("matchId" INTEGER NOT NULL REFERENCES "matches"("matchId") ON UPDATE CASCADE ON DELETE CASCADE, "playerId" INTEGER NOT NULL REFERENCES "players"("playerId") ON UPDATE CASCADE ON DELETE CASCADE, "cardType" TEXT NOT NULL, "minute" INTEGER, PRIMARY KEY ("matchId", "playerId", "cardType", "minute"));
 INSERT INTO "cards" ("matchId","playerId","cardType","minute") VALUES
@@ -107383,7 +107443,9 @@ INSERT INTO "cards" ("matchId","playerId","cardType","minute") VALUES
  (4220,1755,'YC',39),
  (4220,2685,'YC',39),
  (4220,8659,'YC',3),
- (4265,2674,'YC',68);
+ (4265,2674,'YC',68),
+ (4309,9764,'YC',81),
+ (4309,9772,'YC',86);
 DROP TABLE IF EXISTS "substitutions";
 CREATE TABLE "substitutions" ("matchId" INTEGER NOT NULL REFERENCES "matches"("matchId") ON UPDATE CASCADE ON DELETE CASCADE, "playerIdOut" INTEGER NOT NULL REFERENCES "players"("playerId") ON UPDATE CASCADE ON DELETE CASCADE, "playerIdIn" INTEGER REFERENCES "players"("playerId") ON UPDATE CASCADE ON DELETE CASCADE, "minute" INTEGER, PRIMARY KEY ("matchId", "playerIdOut"));
 INSERT INTO "substitutions" ("matchId","playerIdOut","playerIdIn","minute") VALUES
@@ -118386,5 +118448,14 @@ INSERT INTO "substitutions" ("matchId","playerIdOut","playerIdIn","minute") VALU
  (4265,5061,1554,65),
  (4265,8780,8645,65),
  (4265,9257,2574,46),
- (4265,9553,9354,79);
+ (4265,9553,9354,79),
+ (4309,1244,8781,64),
+ (4309,1461,2755,79),
+ (4309,2632,1239,78),
+ (4309,8645,5039,81),
+ (4309,8780,9589,46),
+ (4309,9451,9354,64),
+ (4309,9549,1554,46),
+ (4309,9765,9772,74),
+ (4309,9766,9768,64);
 COMMIT;
